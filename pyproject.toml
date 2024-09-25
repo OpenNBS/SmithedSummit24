@@ -8,7 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 beet = "^0.108.5"
-pigstep = "^0.2.1"
+pynbs = "^1.1.0"
 
 [build-system]
 requires = ["poetry-core"]

@@ -253,21 +253,6 @@ files = [
 ]
 
 [[package]]
-name = "pigstep"
-version = "0.2.1"
-description = "A beet plugin for importing songs into Minecraft"
-optional = false
-python-versions = ">=3.8,<4.0"
-files = [
-    {file = "pigstep-0.2.1-py3-none-any.whl", hash = "sha256:f3e58f05b748c3add1089992f1431a26be4179cd9b52ecb2043882edcf9906fd"},
-    {file = "pigstep-0.2.1.tar.gz", hash = "sha256:b348c798f7a923bae1543fa18a75c6b6054218f2292fdb95ffee220e82537c3c"},
-]
-
-[package.dependencies]
-beet = ">=0.22.0"
-pynbs = ">=0.4.2,<0.5.0"
-
-[[package]]
 name = "pydantic"
 version = "2.9.2"
 description = "Data validation using Python type hints"
@@ -393,13 +378,13 @@ typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 
 [[package]]
 name = "pynbs"
-version = "0.4.2"
+version = "1.1.0"
 description = "A simple python library to read and write .nbs files from Note Block Studio"
 optional = false
-python-versions = ">=2.7"
+python-versions = ">=3.8,<4.0"
 files = [
-    {file = "pynbs-0.4.2-py2.py3-none-any.whl", hash = "sha256:8c61e5be2719afae1a7f2bbbb1d9a383b5b8403a4bd5200381c44217b5b06513"},
-    {file = "pynbs-0.4.2.tar.gz", hash = "sha256:909e7a10849611f7ca3af7ca7d8a0e9829c2ce9cec9fc98ce564eb2bc11966c7"},
+    {file = "pynbs-1.1.0-py3-none-any.whl", hash = "sha256:1b25d2497af0f70e294a093ddef063d612baeb77fef0110cdf84638815061366"},
+    {file = "pynbs-1.1.0.tar.gz", hash = "sha256:bc883de0b32dceaccf606b74d7a99a3ee7522d147bde3d8d3742ec0401b21759"},
 ]
 
 [[package]]
@@ -489,4 +474,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "f4248efdffcb33007522f22920639f11d76aaa272bd76071405d188b73704b46"
+content-hash = "997d23cab8a529b95e7b3cb63fc1546ce43d8cd198383b97e2608ede872c8398"
