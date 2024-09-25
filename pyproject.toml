@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "nbs-smithed-summit-24"
+version = "0.1.0"
+description = "Note Block Studio data pack + resource pack for Smithed Summit 2024"
+authors = ["Bentroen <bemcdc@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+beet = "^0.108.5"
+pigstep = "^0.2.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
