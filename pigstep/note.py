@@ -52,11 +52,13 @@ def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
         instrument.file for instrument in song.instruments
     ]
 
+    pitch = lambda note: note.key + (note.pitch / 100)
+
     for tick, chord in song:
         yield tick, [
             Note(
                 instrument=sounds[note.instrument]
-                + ("_-1" if note.key <= 32 else "_1" if note.key >= 58 else ""),
+                + ("_-1" if pitch(note) < 33 else "_1" if pitch(note) > 57 else ""),
                 volume=(song.layers[note.layer].volume / 100) * (note.velocity / 100),
                 pitch=get_pitch(note),
             )
