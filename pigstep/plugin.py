@@ -17,8 +17,8 @@ EXTRA_NOTES = {
     "block.note_block.banjo_1": "banjo_1.ogg",
     "block.note_block.basedrum_-1": "basedrum_-1.ogg",
     "block.note_block.basedrum_1": "basedrum_1.ogg",
-    "block.note_block.bassattack_-1": "bassattack_-1.ogg",
-    "block.note_block.bassattack_1": "bassattack_1.ogg",
+    "block.note_block.bass_-1": "bassattack_-1.ogg",
+    "block.note_block.bass_1": "bassattack_1.ogg",
     "block.note_block.bell_-1": "bell_-1.ogg",
     "block.note_block.bell_1": "bell_1.ogg",
     "block.note_block.bit_-1": "bit_-1.ogg",
@@ -35,17 +35,23 @@ EXTRA_NOTES = {
     "block.note_block.harp_1": "harp_1.ogg",
     "block.note_block.hat_-1": "hat_-1.ogg",
     "block.note_block.hat_1": "hat_1.ogg",
-    "block.note_block.icechime_-1": "icechime_-1.ogg",
-    "block.note_block.icechime_1": "icechime_1.ogg",
+    "block.note_block.chime_-1": "icechime_-1.ogg",
+    "block.note_block.chime_1": "icechime_1.ogg",
     "block.note_block.iron_xylophone_-1": "iron_xylophone_-1.ogg",
     "block.note_block.iron_xylophone_1": "iron_xylophone_1.ogg",
     "block.note_block.pling_-1": "pling_-1.ogg",
     "block.note_block.pling_1": "pling_1.ogg",
     "block.note_block.snare_-1": "snare_-1.ogg",
     "block.note_block.snare_1": "snare_1.ogg",
-    "block.note_block.xylobone_-1": "xylobone_-1.ogg",
-    "block.note_block.xylobone_1": "xylobone_1.ogg",
+    "block.note_block.xylophone_-1": "xylobone_-1.ogg",
+    "block.note_block.xylophone_1": "xylobone_1.ogg",
 }
+
+# Different names (sound event -> sound file):
+# bass -> bassattack
+# chime -> icechime
+# xylophone -> xylobone
+# basedrum -> bd
 
 
 def autoload(ctx: Context):
