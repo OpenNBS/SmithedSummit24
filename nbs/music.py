@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 import pynbs
-from beet import Context
+from beet import Context, Function
 
 from pigstep import pigstep
 
@@ -58,14 +58,13 @@ def beet_default(ctx: Context) -> None:
         processed_song_paths.append(str(filename))
         print("Exported song", file.name)
 
+    ctx.generate("tick", render=Function(source_path="global_tick.mcfunction"))
+
     ctx.require(
         pigstep(
             load=processed_song_paths,
             source="record",
             templates={
-                "play": "play.mcfunction",
-                "pause": "pause.mcfunction",
-                "stop": "stop.mcfunction",
                 "tick": "tick.mcfunction",
             },
         )

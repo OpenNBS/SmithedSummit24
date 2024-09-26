@@ -81,9 +81,6 @@ def pigstep(
         ctx.require("beet.contrib.inline_function_tag")
 
         functions = {
-            "play": "pigstep/play.mcfunction",
-            "pause": "pigstep/pause.mcfunction",
-            "stop": "pigstep/stop.mcfunction",
             "tick": "pigstep/tick.mcfunction",
         }
 
@@ -92,10 +89,12 @@ def pigstep(
 
         instruments: Set[str] = set()
 
+        song_index = -1
         for pattern in load:
             for path in ctx.directory.glob(pattern):
                 name = normalize_string(path.stem)
                 notes = list(load_nbs(path))
+                song_index += 1
 
                 with ctx.generate["song"][name].push():
                     env = {
@@ -104,7 +103,8 @@ def pigstep(
                         "song_source": source,
                         "song_notes": notes,
                         "song_play": ctx.generate.id("play"),
-                        "song_tick": ctx.generate.objective("tick"),
+                        "song_tick": "nbs",
+                        "song_index": song_index,
                         "generate_song": lambda: generate_tree(
                             ctx.meta["render_path"], notes, lambda p: p[0]
                         ),
