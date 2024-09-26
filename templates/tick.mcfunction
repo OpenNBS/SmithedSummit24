@@ -13,14 +13,14 @@ execute if score songindex nbs matches {{ song_index }} run function {{ note_fun
                 #!set notes = node.value[1]
 
                 #!if notes | length == 1
-                    execute if score songtime nbs matches {{ node.range }} as @e[tag=nbs_speaker] at @s run {{ notes[0].play("@a[distance=..30]", song_source) }}
+                    execute if score songtime nbs matches {{ node.range }} as @e[tag=nbs_speaker] at @s run {{ notes[0].play("@a[distance=..128]", song_source) }}
                 #!else
                     #!set chord_function = generate_path("chord/{hash}", notes)
                     execute if score songtime nbs matches {{ node.range }} as @e[tag=nbs_speaker] at @s run function {{ chord_function }}
 
                     #!function chord_function
                         #!for note in notes
-                            {{ note.play("@a[distance=..30]", song_source) }}
+                            {{ note.play("@a[distance=..128]", song_source) }}
                         #!endfor
                     #!endfunction
                 #!endif

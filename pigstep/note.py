@@ -59,7 +59,9 @@ def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
             Note(
                 instrument=sounds[note.instrument]
                 + ("_-1" if pitch(note) < 33 else "_1" if pitch(note) > 57 else ""),
-                volume=(song.layers[note.layer].volume / 100) * (note.velocity / 100),
+                volume=(song.layers[note.layer].volume / 100)
+                * (note.velocity / 100)
+                * 8,
                 pitch=get_pitch(note),
                 position=get_panning(note, song.layers[note.layer]),
             )
