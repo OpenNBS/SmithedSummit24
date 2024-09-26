@@ -30,6 +30,25 @@ NBS_DEFAULT_INSTRUMENTS = [
     "block.note_block.pling",
 ]
 
+octaves = {
+    "harp": 0,
+    "bass": -2,
+    "basedrum": -1,
+    "snare": 1,
+    "hat": 0,
+    "guitar": -1,
+    "flute": 1,
+    "bell": 2,
+    "chime": 2,
+    "xylophone": 2,
+    "iron_xylophone": 0,
+    "cow_bell": 0,
+    "didgeridoo": -2,
+    "bit": 0,
+    "banjo": 0,
+    "pling": 0,
+}
+
 
 @dataclass
 class Note:
@@ -61,8 +80,14 @@ def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
                 + ("_-1" if pitch(note) < 33 else "_1" if pitch(note) > 57 else ""),
                 volume=(song.layers[note.layer].volume / 100)
                 * (note.velocity / 100)
-                * 8,
-                pitch=get_pitch(note),
+                * 8
+                * get_rolloff_factor(
+                    pitch(note), sounds[note.instrument].split(".")[-1]
+                ),
+                # make bass notes propagate further
+                pitch=get_pitch(
+                    note,
+                ),
                 position=get_panning(note, song.layers[note.layer]),
             )
             for note in chord
@@ -91,3 +116,9 @@ def get_pitch(note: Any) -> float:
         key -= 33
 
     return 2 ** (key / 12) / 2
+
+
+def get_rolloff_factor(pitch: Any, instrument: str) -> float:
+    # Calculate true pitch taking into eaccount each instrument's octave offset
+    real_pitch = pitch + 12 * octaves.get(instrument, 1)
+    return 1 / (real_pitch / 45 + 1)
