@@ -61,9 +61,20 @@ def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
                 + ("_-1" if pitch(note) < 33 else "_1" if pitch(note) > 57 else ""),
                 volume=(song.layers[note.layer].volume / 100) * (note.velocity / 100),
                 pitch=get_pitch(note),
+                position=get_panning(note, song.layers[note.layer]),
             )
             for note in chord
         ]
+
+
+def get_panning(note: Any, layer: Any) -> str:
+    """Get panning for a given nbs note."""
+    if layer.panning == 0:
+        pan = note.panning
+    else:
+        pan = (layer.panning + note.panning) / 2
+    pan /= 100
+    return "^ ^ ^" + f"{pan * 4}"
 
 
 def get_pitch(note: Any) -> float:
