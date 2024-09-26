@@ -126,5 +126,11 @@ def pigstep(
                     event=instrument,
                     subtitle="subtitles.block.note_block.note",
                 )
+            elif sound_file is not None and not sound_file.startswith(
+                "block.note_block."
+            ):
+                sounds[instrument.replace(".", "/")] = Sound(
+                    event=instrument, subtitle="subtitles.block.note_block.note"
+                )
 
     return plugin
