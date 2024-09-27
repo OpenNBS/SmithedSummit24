@@ -33,7 +33,11 @@ def generate_scrolling_texture(img: Image.Image, scroll_factor: int = 4) -> Text
 
     frames = []
 
-    for x in range(0, width + tile_size, scroll_factor):
+    # Grow the image to the left to allow for scrolling
+    src = Image.new("RGBA", (width + tile_size, height), (0, 0, 0, 0))
+    src.paste(img, (tile_size, 0))
+
+    for x in range(-tile_size, width + tile_size, scroll_factor):
         frame = img.crop((x, 0, x + tile_size, height))
         frames.append(frame)
 
