@@ -10,4 +10,5 @@ resource_pack:
 pipeline:
   - pigstep
   - nbs.music
+  - nbs.model
   - beet.contrib.scoreboard
