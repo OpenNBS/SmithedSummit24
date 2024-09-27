@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-beet = "^0.108.5"
+beet = {extras = ["image"], version = "^0.108.5"}
 pynbs = "^1.1.0"
 
 [build-system]
