@@ -1,3 +1,5 @@
+from fnmatch import fnmatch
+
 from beet import Context, Model, Texture, TextureMcmeta
 from PIL import Image
 
@@ -13,6 +15,13 @@ models = [
     "speakers",
     "headphones",
 ]
+
+emissive_textures = ["scroll_panel_*", "note*"]
+
+no_shade_textures = ["nbw_*"]
+
+EMISSIVE_ALPHA = 254
+NO_SHADE_ALPHA = 253
 
 
 def generate_model_predicates(parent: str, models: list[str]) -> Model:
@@ -85,9 +94,23 @@ def generate_scrolling_animation(ctx: Context) -> None:
         ctx.assets.textures_mcmeta[f"nbs:block/scroll_panel_{i}"] = mcmeta
 
 
+def apply_emissive_textures(ctx: Context) -> None:
+    for name, texture in ctx.assets.textures.items():
+        name = name.split("/")[-1]
+        if any(fnmatch(name, pattern) for pattern in emissive_textures):
+            if texture.image.mode != "RGBA":
+                texture.image = texture.image.convert("RGBA")
+            texture.image.putalpha(EMISSIVE_ALPHA)
+        if any(fnmatch(name, pattern) for pattern in no_shade_textures):
+            if texture.image.mode != "RGBA":
+                texture.image = texture.image.convert("RGBA")
+            texture.image.putalpha(NO_SHADE_ALPHA)
+
+
 def beet_default(ctx: Context):
     ctx.assets["minecraft:item/note_block"] = generate_model_predicates(
         "block/note_block", models
     )
 
     generate_scrolling_animation(ctx)
+    apply_emissive_textures(ctx)
