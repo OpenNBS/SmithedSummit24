@@ -6,19 +6,12 @@ from beet import Context, Function
 
 from pigstep import pigstep
 
-# from beet.contrib.vanilla import Vanilla
-
 
 def get_pitch(note: pynbs.Note) -> float:
     return note.key + note.pitch / 100
 
 
 def beet_default(ctx: Context) -> None:
-
-    # Inject vanilla assets
-    # vanilla = ctx.inject(Vanilla)
-    # vanilla.mount("assets/minecraft/sounds")
-
     temp_songs_path = Path("songs", ".temp")
     if not os.path.exists(temp_songs_path):
         os.makedirs(temp_songs_path)
