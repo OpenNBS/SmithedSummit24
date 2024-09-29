@@ -71,27 +71,31 @@ def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
         instrument.file for instrument in song.instruments
     ]
 
-    pitch = lambda note: note.key + (note.pitch / 100)
+    def get_note(note: Any) -> Note:
+        """Get a /playsound note from a given nbs note."""
+
+        layer = song.layers[note.layer]
+
+        sound = sounds[note.instrument]
+        pitch = note.key + (note.pitch / 100)
+        octave_suffix = "_-1" if pitch < 33 else "_1" if pitch > 57 else ""
+        source = f"{sound}{octave_suffix}"
+
+        layer_volume = layer.volume / 100
+        note_volume = note.velocity / 100
+        global_volume = 8
+        instrument = sound.split(".")[-1]
+        rolloff_factor = get_rolloff_factor(pitch, instrument)
+        volume = layer_volume * note_volume * global_volume * rolloff_factor
+
+        pitch = get_pitch(note)
+
+        position = get_panning(note, layer)
+
+        return Note(source, position, volume, pitch)
 
     for tick, chord in song:
-        yield tick, [
-            Note(
-                instrument=sounds[note.instrument]
-                + ("_-1" if pitch(note) < 33 else "_1" if pitch(note) > 57 else ""),
-                volume=(song.layers[note.layer].volume / 100)
-                * (note.velocity / 100)
-                * 8
-                * get_rolloff_factor(
-                    pitch(note), sounds[note.instrument].split(".")[-1]
-                ),
-                # make bass notes propagate further
-                pitch=get_pitch(
-                    note,
-                ),
-                position=get_panning(note, song.layers[note.layer]),
-            )
-            for note in chord
-        ]
+        yield tick, [get_note(note) for note in chord]
 
 
 def get_panning(note: Any, layer: Any) -> str:
@@ -121,4 +125,4 @@ def get_pitch(note: Any) -> float:
 def get_rolloff_factor(pitch: Any, instrument: str) -> float:
     # Calculate true pitch taking into eaccount each instrument's octave offset
     real_pitch = pitch + 12 * octaves.get(instrument, 1)
-    return 1 / (real_pitch / 45 + 1)
+    return 1 / (real_pitch / 45 + 1) * 0.5
