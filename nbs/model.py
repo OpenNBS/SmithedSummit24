@@ -8,7 +8,6 @@ models = [
     "nbw_text",
     "scroll_panel",
     "note_block_flat",
-    "note",
     "gramophone_base",
     "gramophone",
     "record_player",
@@ -92,6 +91,7 @@ def generate_scrolling_animation(ctx: Context) -> None:
     for i, mcmeta in enumerate(mcmetas, start=1):
         ctx.assets.textures[f"nbs:block/scroll_panel_{i}"] = texture
         ctx.assets.textures_mcmeta[f"nbs:block/scroll_panel_{i}"] = mcmeta
+    del ctx.assets.textures["nbs:block/nbw_32x"]
 
 
 def apply_emissive_textures(ctx: Context) -> None:
@@ -107,10 +107,30 @@ def apply_emissive_textures(ctx: Context) -> None:
             texture.image.putalpha(NO_SHADE_ALPHA)
 
 
+def create_note_models(ctx: Context) -> None:
+    note_variants = filter(
+        lambda name: name.startswith("nbs:block/note"), ctx.assets.textures
+    )
+
+    global models
+    for texture in note_variants:
+        note_model = Model(
+            {
+                "parent": "nbs:note_base",
+                "textures": {"0": texture},
+            }
+        )
+        filename = texture.split("/")[-1]
+        print(f"nbs:{filename}")
+        ctx.assets.models[f"nbs:{filename}"] = note_model
+        models.append(filename)
+
+
 def beet_default(ctx: Context):
+    create_note_models(ctx)
+
     ctx.assets["minecraft:item/note_block"] = generate_model_predicates(
         "block/note_block", models
     )
-
     generate_scrolling_animation(ctx)
     apply_emissive_textures(ctx)

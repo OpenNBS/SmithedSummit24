@@ -1,9 +1,5 @@
 {
 	"credit": "Made with Blockbench",
-	"textures": {
-		"0": "nbs:block/note",
-		"particle": "nbs:block/note"
-	},
 	"elements": [
 		{
 			"from": [7.5, 0, 7],
