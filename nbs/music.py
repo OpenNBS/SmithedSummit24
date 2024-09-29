@@ -6,8 +6,18 @@ from beet import Context, Function
 
 from pigstep import pigstep
 
+# from beet.contrib.vanilla import Vanilla
+
+
+def get_pitch(note: pynbs.Note) -> float:
+    return note.key + note.pitch / 100
+
 
 def beet_default(ctx: Context) -> None:
+
+    # Inject vanilla assets
+    # vanilla = ctx.inject(Vanilla)
+    # vanilla.mount("assets/minecraft/sounds")
 
     temp_songs_path = Path("songs", ".temp")
     if not os.path.exists(temp_songs_path):
@@ -20,17 +30,6 @@ def beet_default(ctx: Context) -> None:
     for file in Path("songs").glob("*.nbs"):
         song = pynbs.read(file)
 
-        # Set instrument name to sound event name (pigstep uses the sound file field as the sound event)
-        for ins in song.instruments:
-            new_ins = pynbs.Instrument(
-                id=ins.id,
-                name=ins.name,
-                file=ins.name,
-                pitch=ins.pitch,
-                press_key=ins.press_key,
-            )
-            song.instruments[ins.id] = new_ins
-
         # Quantize notes to nearest tick (pigstep always exports at 20 t/s)
         # Remove notes outside the 6-octave range
         new_notes = []
@@ -38,8 +37,27 @@ def beet_default(ctx: Context) -> None:
             new_tick = round(tick * 20 / song.header.tempo)
             for note in chord:
                 note.tick = new_tick
-                if 9 <= note.key <= 81:
-                    new_notes.append(note)
+                note_pitch = get_pitch(note)
+                is_custom_instrument = (
+                    note.instrument >= song.header.default_instruments
+                )
+                is_2_octave = 33 <= note_pitch <= 57
+                is_6_octave = 9 <= note_pitch <= 81
+
+                if is_custom_instrument and not is_2_octave:
+                    print(
+                        f"Warning: Custom instrument out of 2-octave range at {note.tick},{note.layer}: {note_pitch}"
+                    )
+                    continue
+
+                if not is_custom_instrument and not is_6_octave:
+                    print(
+                        f"Warning: Vanilla instrument out of 6-octave range at {note.tick},{note.layer}: {note_pitch}"
+                    )
+                    continue
+
+                new_notes.append(note)
+
         song.notes = new_notes
 
         # Ensure that there are as many layers as the last layer with a note

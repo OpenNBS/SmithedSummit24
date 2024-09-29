@@ -7,7 +7,7 @@ __all__ = [
 from importlib.resources import read_binary
 from typing import Iterable, Optional, Set, cast
 
-from beet import Context, Function, Plugin, Sound, generate_tree
+from beet import Context, Function, Plugin, Sound, SoundConfig, generate_tree
 from beet.core.utils import JsonDict, normalize_string
 
 from .note import load_nbs
@@ -118,19 +118,28 @@ def pigstep(
                 )
 
         sounds = ctx.assets["minecraft"].sounds
+        sound_config = ctx.assets["minecraft"].sound_config = SoundConfig()
 
         for instrument in instruments:
-            if sound_file := EXTRA_NOTES.get(instrument):
+            sound_file = EXTRA_NOTES.get(instrument)
+            if sound_file is not None:
                 sounds[instrument.replace(".", "/")] = Sound(
                     read_binary("pigstep.sounds", sound_file),
                     event=instrument,
                     subtitle="subtitles.block.note_block.note",
                 )
-            elif sound_file is not None and not sound_file.startswith(
+            elif instrument is not None and not instrument.startswith(
                 "block.note_block."
             ):
-                sounds[instrument.replace(".", "/")] = Sound(
-                    event=instrument, subtitle="subtitles.block.note_block.note"
+                sound_config.merge(
+                    SoundConfig(
+                        {
+                            instrument.replace("/", "_"): {
+                                "sounds": [instrument],
+                                "subtitle": "subtitles.block.note_block.note",
+                            }
+                        }
+                    )
                 )
 
     return plugin

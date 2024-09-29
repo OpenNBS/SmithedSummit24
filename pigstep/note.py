@@ -68,7 +68,8 @@ def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
     """Yield all the notes from the given nbs file."""
     song = pynbs.read(filename)
     sounds = NBS_DEFAULT_INSTRUMENTS + [
-        instrument.file for instrument in song.instruments
+        instrument.file.replace("minecraft/", "").replace(".ogg", "")
+        for instrument in song.instruments
     ]
 
     def get_note(note: Any) -> Note:
@@ -76,7 +77,7 @@ def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
 
         layer = song.layers[note.layer]
 
-        sound = sounds[note.instrument]
+        sound = sounds[note.instrument].replace("/", "_")
         pitch = note.key + (note.pitch / 100)
         octave_suffix = "_-1" if pitch < 33 else "_1" if pitch > 57 else ""
         source = f"{sound}{octave_suffix}"
