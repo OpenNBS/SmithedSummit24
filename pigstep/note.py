@@ -5,6 +5,7 @@ __all__ = [
 ]
 
 
+import math
 from dataclasses import dataclass
 from typing import Any, Iterator, List, Tuple
 
@@ -57,11 +58,12 @@ class Note:
     instrument: str = "block.note_block.harp"
     position: str = "^ ^ ^"
     volume: float = 1
+    radius: float = 16
     pitch: float = 1
 
     def play(self, player: str = "@s", source: str = "record") -> str:
         """Return the /playsound command to play the note for the given player."""
-        return f"playsound {self.instrument} {source} {player} {self.position} {self.volume} {self.pitch}"
+        return f"playsound {self.instrument} {source} @a[distance=..{self.radius}] {self.position} {self.volume} {self.pitch}"
 
 
 def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
@@ -84,16 +86,17 @@ def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
 
         layer_volume = layer.volume / 100
         note_volume = note.velocity / 100
-        global_volume = 8
+        global_volume = 1
         instrument = sound.split(".")[-1]
-        rolloff_factor = get_rolloff_factor(pitch, instrument)
-        volume = layer_volume * note_volume * global_volume * rolloff_factor
+        volume = layer_volume * note_volume * global_volume
+
+        radius = 9 + get_rolloff_factor(pitch, instrument)
 
         pitch = get_pitch(note)
 
-        position = get_panning(note, layer)
+        position = "^ ^ ^"  # get_panning(note, layer)
 
-        return Note(source, position, volume, pitch)
+        return Note(source, position, volume, radius, pitch)
 
     for tick, chord in song:
         yield tick, [get_note(note) for note in chord]
@@ -123,7 +126,23 @@ def get_pitch(note: Any) -> float:
     return 2 ** (key / 12) / 2
 
 
-def get_rolloff_factor(pitch: Any, instrument: str) -> float:
-    # Calculate true pitch taking into eaccount each instrument's octave offset
+def sigmoid(x: float, slope: float = 1, offset: float = 0, scale: float = 1) -> float:
+    return (1 / (1 + math.exp(-x * slope)) + offset) * scale
+
+
+def rolloff_curve(x: float) -> float:
+    # slope  = -6   -> make curve steeper towards the center and mirror it in the x axis
+    # offset = -0.5 -> move the curve down so its center is at y=0
+    # scale  = 6    -> scale the curve so it goes from -3 to 3 as x approaches +/-inf
+
+    # see: https://www.desmos.com/calculator/roidl8wnxl
+
+    return sigmoid(x, -6, -0.5, 6)
+
+
+def get_rolloff_factor(pitch: float, instrument: str) -> float:
+    # Calculate true pitch taking into account each instrument's octave offset
     real_pitch = pitch + 12 * octaves.get(instrument, 1)
-    return 1 / (real_pitch / 45 + 1) * 0.5
+    # 45 is the middle point (33-57) of the 6-octave range, where the rolloff factor should be 0
+    factor = (real_pitch - 45) / (45 - 8)
+    return rolloff_curve(factor)
