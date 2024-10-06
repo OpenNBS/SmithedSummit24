@@ -55,7 +55,7 @@ append function ~/../global/load:
 
 for song_stuff in enumerate(SONGS.glob("*.nbs")):
     path = song_stuff[1]
-    song_name = normalize_string(path.stem)
+    song_name = normalize_string(path.stem.split(" - ")[0].split("(")[0])
     print("processing", song_name)
     song_index = song_stuff[0]
 
