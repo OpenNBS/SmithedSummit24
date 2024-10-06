@@ -1,0 +1,38 @@
+#> setup
+function_tag minecraft:load {
+    "values": [(~/load)]
+}
+
+append function ~/load:
+    scoreboard objectives add nbs dummy
+
+
+#> tick the song time
+function_tag minecraft:tick {
+    "values": [(~/tick)]
+}
+
+function ~/tick:
+    execute if score playing nbs matches 1 run scoreboard players add songtime nbs 1
+
+
+#> Song Controls
+function ~/next:
+    scoreboard players set songtime nbs -1
+    scoreboard players add songindex nbs 1
+    execute if score songindex nbs matches 10.. run scoreboard players set songindex nbs 0
+
+function ~/pause:
+    scoreboard players set playing nbs 0
+
+function ~/play:
+    scoreboard players set playing nbs 1
+
+function ~/prev:
+    scoreboard players set songtime nbs -1
+    scoreboard players remove songindex nbs 1
+    execute if score songindex nbs matches ..-1 run scoreboard players set songindex nbs 10
+
+function ~/stop:
+    scoreboard players set playing nbs 0
+    scoreboard players set songtime nbs -1

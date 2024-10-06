@@ -39,6 +39,21 @@ typing-extensions = ">=4.8.0,<5.0.0"
 image = ["Pillow"]
 
 [[package]]
+name = "bolt"
+version = "0.49.1"
+description = "Supercharge Minecraft commands with Python"
+optional = false
+python-versions = "<4.0,>=3.10"
+files = [
+    {file = "bolt-0.49.1-py3-none-any.whl", hash = "sha256:912496abb4ed2593db1e44ec6655685d63d0003ee7218a2740ce91ad8ad9e36e"},
+    {file = "bolt-0.49.1.tar.gz", hash = "sha256:40cd165e6eb438161cc8cd91fbebc90672169ee7114a3a79d3351e127a08dec7"},
+]
+
+[package.dependencies]
+beet = ">=0.108.0"
+mecha = ">=0.95.0"
+
+[[package]]
 name = "click"
 version = "8.1.7"
 description = "Composable command line interface toolkit"
@@ -165,6 +180,21 @@ files = [
     {file = "MarkupSafe-2.1.5-cp39-cp39-win_amd64.whl", hash = "sha256:fa173ec60341d6bb97a89f5ea19c85c5643c1e7dedebc22f5181eb73573142c5"},
     {file = "MarkupSafe-2.1.5.tar.gz", hash = "sha256:d283d37a890ba4c1ae73ffadf8046435c76e7bc2247bbb63c00bd1a709c6544b"},
 ]
+
+[[package]]
+name = "mecha"
+version = "0.95.2"
+description = "A powerful Minecraft command library"
+optional = false
+python-versions = "<4.0,>=3.10"
+files = [
+    {file = "mecha-0.95.2-py3-none-any.whl", hash = "sha256:8abbbc6eee9871d622bf9c90cd6c3217b8325966d546bb0ca229d1eb7b963eff"},
+    {file = "mecha-0.95.2.tar.gz", hash = "sha256:06ee6f80f9dc091617fdeef7c03ffbbf482d5ec07cceab6e9f31a72a4e8a1ed8"},
+]
+
+[package.dependencies]
+beet = ">=0.108.0"
+tokenstream = ">=1.7.0,<2.0.0"
 
 [[package]]
 name = "nbtlib"
@@ -548,6 +578,17 @@ files = [
 ]
 
 [[package]]
+name = "tokenstream"
+version = "1.7.0"
+description = "A versatile token stream for handwritten parsers"
+optional = false
+python-versions = ">=3.10,<4.0"
+files = [
+    {file = "tokenstream-1.7.0-py3-none-any.whl", hash = "sha256:fdbb20e8a99b07e94ce88016e5f243a1582630a7459bd2e7a1c786f33543fcf9"},
+    {file = "tokenstream-1.7.0.tar.gz", hash = "sha256:9f98387c7e74d224f7cca874ce77bb775ece6cb585e9ba18441960e2b35fae61"},
+]
+
+[[package]]
 name = "toml"
 version = "0.10.2"
 description = "Python Library for Tom's Obvious, Minimal Language"
@@ -572,4 +613,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "a9852c8dbe82a62b577a68a33c08eb58688b7ad79e2feaddd6eeea4185904f75"
+content-hash = "a8b0b7cd4169cae4f7c977e8b670c3bbc5f48bef634675456c21f65c93934ed7"

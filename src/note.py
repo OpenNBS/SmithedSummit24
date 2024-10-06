@@ -68,7 +68,46 @@ class Note:
 
 def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
     """Yield all the notes from the given nbs file."""
+
     song = pynbs.read(filename)
+
+    # Quantize notes to nearest tick (pigstep always exports at 20 t/s)
+    # Remove notes outside the 6-octave range
+    new_notes = []
+    for tick, chord in song:
+        new_tick = round(tick * 20 / song.header.tempo)
+        for note in chord:
+            note.tick = new_tick
+            note_pitch = get_pitch(note)
+            is_custom_instrument = note.instrument >= song.header.default_instruments
+            is_2_octave = 33 <= note_pitch <= 57
+            is_6_octave = 9 <= note_pitch <= 81
+
+            if is_custom_instrument and not is_2_octave:
+                # print(
+                #    f"Warning: Custom instrument out of 2-octave range at {note.tick},{note.layer}: {note_pitch}"
+                # )
+                continue
+
+            if not is_custom_instrument and not is_6_octave:
+                # print(
+                #    f"Warning: Vanilla instrument out of 6-octave range at {note.tick},{note.layer}: {note_pitch}"
+                # )
+                continue
+
+            new_notes.append(note)
+
+    # song.notes = new_notes
+
+    # Ensure that there are as many layers as the last layer with a note
+    max_layer = max(note.layer for note in song.notes)
+    while len(song.layers) <= max_layer:
+        song.layers.append(pynbs.Layer(id=len(song.layers)))
+
+    # Make sure instrument paths are valid
+    for instrument in song.instruments:
+        instrument.file = instrument.file.lower().replace(" ", "_")
+
     sounds = NBS_DEFAULT_INSTRUMENTS + [
         instrument.file.replace("minecraft/", "").replace(".ogg", "")
         for instrument in song.instruments

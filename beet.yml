@@ -1,14 +1,23 @@
 id: nbs
+
 data_pack:
   name: nbs-smithed-summit-24
   description: "Data pack for NBS on the Smithed Summit 2024"
-  load: [src]
+  load:
+    - "data/nbs/module": src
+
 resource_pack:
   name: nbs-smithed-summit-24
   description: "Resource pack for NBS on the Smithed Summit 2024"
   load: [assets]
+
+require: [bolt]
 pipeline:
-  - pigstep
-  - nbs.music
   - nbs.model
-  - beet.contrib.scoreboard
+  - mecha
+
+output: dist
+
+meta:
+  bolt:
+    entrypoint: "*"
