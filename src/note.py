@@ -56,14 +56,140 @@ class Note:
     """Represents a note produced by a /playsound command."""
 
     instrument: str = "block.note_block.harp"
-    position: str = "^ ^ ^"
     volume: float = 1
     radius: float = 16
     pitch: float = 1
+    panning: float = 0
 
-    def play(self, player: str = "@s", source: str = "record") -> str:
+    def play_speakers(self, stereo_separation: float = 4):
+        """
+        Play a sound that can be heard in a small radius by all players in range.
+        """
+
+        # This is achieved by bypassing the `volume` argument completely and instead using the
+        # target selector's `distance` argument to determine what players will be able to hear
+        # the song at all. Decay is achieved by using the `distance` argument to limit the range
+        # of the sound, with a base range and a rolloff factor that increases the audible range
+        # of notes according to its pitch (lower notes will be audible from further away).
+        #
+        # The regular value for volume in a /playsound command is 1.0 = 16 blocks. It's possible
+        # to increase it to increase the audible range (e.g. 2.0 = 32 blocks and so on), but
+        # decreasing it does *not* actually decrease the audible range, as you'd expect (e.g.
+        # 0.5 = 8 blocks). Instead, the sound is still audible within a 16-block range, but is
+        # softer overall.
+        #
+        # So, the only to achieve a gradual rolloff less than 16 blocks, is by entirely limiting
+        # who will be able to hear the songs at all via target selection. As such, we can use the
+        # `distance` condition to play notes only to players in a certain range. The code
+        # works with a base range of 9, adding ±3 blocks for lower and higher notes, giving an
+        # effective range between 6-12 blocks. This rolloff can be easily customized by tweaking
+        # the parameters of the sigmoid function used in the calculation. This creates a harsher
+        # decay/rolloff than using volume, but is necessary to achieve rolloff with a ranger smaller
+        # than 16 blocks.
+
+        def rolloff_curve(x: float) -> float:
+            # slope  = -6   -> make curve steeper towards the center and mirror it in the x axis
+            # offset = -0.5 -> move the curve down so its center is at y=0
+            # scale  = 6    -> scale the curve so it goes from -3 to 3 as x approaches +/-inf
+
+            # see: https://www.desmos.com/calculator/roidl8wnxl
+
+            return sigmoid(x, -6, -0.5, 6)
+
+        radius = 9 + rolloff_curve(self.radius)
+
+        stereo_offset = self.panning * stereo_separation // 2
+        position = f"^{stereo_offset} ^ ^"
+
+        return self.play(
+            execute_as="@e[tag=nbs_speaker]", radius=radius, position=position
+        )
+
+    def play_loudspeakers(self, stereo_separation: float = 8):
+        """
+        Play a sound that can be heard in a large radius by all players in range.
+        """
+
+        # This is achieved by using a large `volume` (sound will be audible at full volume
+        # inside a spherical range of `volume * 16` blocks) and setting `min_volume` to 0.
+        # The volume is multiplied by the `rolloff_factor` to make bass notes propagate further,
+        # giving the impression of the song 'fading' away as the player moves away from the source.
+
+        decay_range = 48  # only bass notes will be audible at this range
+        full_range = 32  # all notes will be audible at this range
+
+        min_volume = decay_range // 16
+        max_volume = full_range // 16
+
+        rolloff_factor = self.radius
+
+        target_volume = min_volume + (max_volume - min_volume) * sigmoid(
+            rolloff_factor, -1, -0.5, 1
+        )
+
+        volume = target_volume
+        radius = full_range
+
+        stereo_offset = self.panning * stereo_separation // 2
+        position = f"^{stereo_offset} ^ ^"
+
+        return self.play(
+            execute_as="@e[tag=nbs_loudspeaker]",
+            radius=radius,
+            volume=volume,
+            min_volume=min_volume,
+            position=position,
+        )
+
+    def play_headphones(self):
+        """
+        Play a sound that can be globally heard by players with headphones.
+        """
+
+        # This is achieved by setting the `volume` to 0 (actual value is irrelevant) and,
+        # instead, using `min_volume` as the desired volume. This way it doesn't matter if
+        # the player is within the `volume`'s range - they will always hear it at `min_volume`.
+        # No custom rolloff is present here.
+
+        min_volume = self.volume
+        volume = 0
+        tag = "nbs_headphones"
+        position = f"0 64 {-self.panning * 256}"
+
+        return self.play(
+            min_volume=min_volume,
+            volume=volume,
+            tag=tag,
+            position=position,
+        )
+
+    def play(
+        self,
+        execute_as: str | None = None,
+        radius: float | None = None,
+        tag: str | None = None,
+        source: str = "record",
+        position: str = "^ ^ ^",
+        volume: float = 1,
+        min_volume: float = 1,
+    ) -> str:
         """Return the /playsound command to play the note for the given player."""
-        return f"playsound {self.instrument} {source} @a[distance=..{self.radius}] {self.position} {self.volume} {self.pitch}"
+
+        selector_arguments = []
+        if radius is not None:
+            selector_arguments.append(f"distance=..{radius}")
+        if tag is not None:
+            selector_arguments.append(f"tag={tag}")
+        target_selector = f"@a[{','.join(selector_arguments)}]"
+
+        execute_command = ""
+        if execute_as is not None:
+            execute_command = f"execute as {execute_as} at @n run"
+
+        playsound_command = f"playsound {self.instrument} {source} {target_selector} {position} {volume} {self.pitch} {min_volume}"
+
+        full_command = " ".join([execute_command, playsound_command])
+        return full_command
 
 
 def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
@@ -73,7 +199,6 @@ def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
 
     # Quantize notes to nearest tick (pigstep always exports at 20 t/s)
     # Remove notes outside the 6-octave range
-    new_notes = []
     for tick, chord in song:
         new_tick = round(tick * 20 / song.header.tempo)
         for note in chord:
@@ -95,10 +220,6 @@ def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
                 # )
                 continue
 
-            new_notes.append(note)
-
-    # song.notes = new_notes
-
     # Ensure that there are as many layers as the last layer with a note
     max_layer = max(note.layer for note in song.notes)
     while len(song.layers) <= max_layer:
@@ -113,8 +234,8 @@ def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
         for instrument in song.instruments
     ]
 
-    def get_note(note: Any) -> Note:
-        """Get a /playsound note from a given nbs note."""
+    def get_note(note: pynbs.Note) -> Note:
+        """Get an intermediary note for /playsound based on a pynbs note."""
 
         layer = song.layers[note.layer]
 
@@ -125,30 +246,33 @@ def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
 
         layer_volume = layer.volume / 100
         note_volume = note.velocity / 100
-        global_volume = 1
         instrument = sound.split(".")[-1]
-        volume = layer_volume * note_volume * global_volume
+        volume = layer_volume * note_volume
 
-        radius = 9 + get_rolloff_factor(pitch, instrument)
-
+        radius = get_rolloff_factor(pitch, instrument)
+        panning = get_panning(note, layer)
         pitch = get_pitch(note)
 
-        position = "^ ^ ^"  # get_panning(note, layer)
-
-        return Note(source, position, volume, radius, pitch)
+        return Note(
+            instrument=source,
+            volume=volume,
+            radius=radius,
+            panning=panning,
+            pitch=pitch,
+        )
 
     for tick, chord in song:
         yield tick, [get_note(note) for note in chord]
 
 
-def get_panning(note: Any, layer: Any) -> str:
+def get_panning(note: Any, layer: Any) -> float:
     """Get panning for a given nbs note."""
     if layer.panning == 0:
         pan = note.panning
     else:
         pan = (layer.panning + note.panning) / 2
     pan /= 100
-    return "^ ^ ^" + f"{pan * 4}"
+    return pan
 
 
 def get_pitch(note: Any) -> float:
@@ -169,19 +293,16 @@ def sigmoid(x: float, slope: float = 1, offset: float = 0, scale: float = 1) -> 
     return (1 / (1 + math.exp(-x * slope)) + offset) * scale
 
 
-def rolloff_curve(x: float) -> float:
-    # slope  = -6   -> make curve steeper towards the center and mirror it in the x axis
-    # offset = -0.5 -> move the curve down so its center is at y=0
-    # scale  = 6    -> scale the curve so it goes from -3 to 3 as x approaches +/-inf
-
-    # see: https://www.desmos.com/calculator/roidl8wnxl
-
-    return sigmoid(x, -6, -0.5, 6)
-
-
 def get_rolloff_factor(pitch: float, instrument: str) -> float:
+    """
+    Return the rolloff factor of a note, given its pitch and instrument.
+    The rolloff factor is a value between -1 and 1 that determines how far
+    the note can be heard. Its value is zero at the center of the 6-octave
+    range (45) and increases linearly towards the edges of the range.
+    """
+
     # Calculate true pitch taking into account each instrument's octave offset
     real_pitch = pitch + 12 * octaves.get(instrument, 1)
     # 45 is the middle point (33-57) of the 6-octave range, where the rolloff factor should be 0
     factor = (real_pitch - 45) / (45 - 8)
-    return rolloff_curve(factor)
+    return factor

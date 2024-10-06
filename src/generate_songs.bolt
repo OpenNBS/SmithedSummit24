@@ -74,10 +74,9 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
             function ~/chord/tick:
                 for note in notes:
                     instruments.add(note.instrument)
-                    
-                    # note.play_speaker()
-                    # note.play_headphones()
-                    note.play()
+                    note.play_speakers()
+                    note.play_loudspeakers()
+                    note.play_headphones()
 
 for instrument in instruments:
     sound_path = EXTRA_NOTES.get(instrument)
