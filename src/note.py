@@ -129,7 +129,7 @@ class Note:
         )
 
         volume = target_volume
-        radius = full_range
+        radius = decay_range
 
         stereo_offset = self.panning * stereo_separation // 2
         position = f"^{stereo_offset} ^ ^"
