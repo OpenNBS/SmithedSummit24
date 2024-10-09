@@ -124,9 +124,9 @@ class Note:
 
         rolloff_factor = self.radius
 
-        target_volume = min_volume + (max_volume - min_volume) * linear(
-            rolloff_factor * self.volume, -0.5, 0.5
-        )
+        target_volume = (
+            min_volume + (max_volume - min_volume) * linear(rolloff_factor, -0.5, 0.5)
+        ) * self.volume
 
         volume = target_volume
         radius = decay_range
