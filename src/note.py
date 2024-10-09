@@ -124,8 +124,8 @@ class Note:
 
         rolloff_factor = self.radius
 
-        target_volume = min_volume + (max_volume - min_volume) * sigmoid(
-            rolloff_factor * self.volume, -4.5, 0, 1
+        target_volume = min_volume + (max_volume - min_volume) * linear(
+            rolloff_factor * self.volume, -0.5, 0.5
         )
 
         volume = target_volume
@@ -295,6 +295,10 @@ def get_pitch(note: Any) -> float:
 
 def sigmoid(x: float, slope: float = 1, offset: float = 0, scale: float = 1) -> float:
     return (1 / (1 + math.exp(-x * slope)) + offset) * scale
+
+
+def linear(x: float, slope: float = 1, offset: float = 0) -> float:
+    return x * slope + offset
 
 
 def get_rolloff_factor(pitch: float, instrument: str) -> float:
