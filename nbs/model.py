@@ -121,7 +121,6 @@ def create_note_models(ctx: Context) -> None:
             }
         )
         filename = texture.split("/")[-1]
-        print(f"nbs:{filename}")
         ctx.assets.models[f"nbs:{filename}"] = note_model
         models.append(filename)
 
