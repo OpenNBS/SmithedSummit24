@@ -104,7 +104,7 @@ class Note:
         stereo_offset = self.panning * stereo_separation // 2
         position = f"^{stereo_offset} ^ ^"
 
-        return self.play(radius=radius, position=position)
+        return self.play(radius=radius, position=position, volume=self.volume)
 
     def play_loudspeakers(self, stereo_separation: float = 8) -> str:
         """
