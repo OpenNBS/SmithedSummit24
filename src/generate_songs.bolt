@@ -66,17 +66,19 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
             "formatted_string": generate_formatted_string(song_name)
         }
     
-    for song in load_nbs(path):
-        tick = song[0]
-        notes = song[1]
-        function f"nbs:{song_name}":
-            execute store result storage nbs:main songindex int 1 run scoreboard players get songindex nbs
-            function f"nbs:{song_name}/chord/{tick}":
-                for note in notes:
-                    instruments.add(note.instrument)
-                    execute as @e[tag=nbs_speaker] at @n run playsound f"{note.play_speakers()}"
-                    execute as @e[tag=nbs_loudspeaker] at @n run playsound f"{note.play_loudspeakers()}"
-                    playsound f"{note.play_headphones()}"
+    for chord in load_nbs(path):
+        tick = chord[0]
+        notes = chord[1]
+            #data modify storage nbs:main playing set from storage nbs:main songs[0]
+        function f"nbs:song/{song_name}/{tick}":
+            for note in notes:
+                instruments.add(note.instrument)
+                execute as @e[tag=nbs_speaker] at @s run playsound f"{note.play_speakers()}"
+                execute as @e[tag=nbs_loudspeaker] at @s run playsound f"{note.play_loudspeakers()}"
+                playsound f"{note.play_headphones()}"
+
+    function f"nbs:song/{song_name}/{tick + 1}":
+        function nbs:global/shuffle
 
 for instrument in instruments:
     sound_path = EXTRA_NOTES.get(instrument)
