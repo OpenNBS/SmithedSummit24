@@ -10,7 +10,10 @@ from dataclasses import dataclass
 from typing import Any, Iterator, List, Tuple
 
 import pynbs
+from beet import Context
 from beet.core.utils import FileSystemPath
+from bolt import Runtime
+from mecha import Mecha
 
 NBS_DEFAULT_INSTRUMENTS = [
     "block.note_block.harp",
@@ -61,7 +64,7 @@ class Note:
     pitch: float = 1
     panning: float = 0
 
-    def play_speakers(self, stereo_separation: float = 4):
+    def play_speakers(self, ctx: Context, stereo_separation: float = 4):
         """
         Play a sound that can be heard in a small radius by all players in range.
         """
@@ -101,11 +104,11 @@ class Note:
         stereo_offset = self.panning * stereo_separation // 2
         position = f"^{stereo_offset} ^ ^"
 
-        return self.play(
-            execute_as="@e[tag=nbs_speaker]", radius=radius, position=position
+        self.play(
+            ctx, execute_as="@e[tag=nbs_speaker]", radius=radius, position=position
         )
 
-    def play_loudspeakers(self, stereo_separation: float = 8):
+    def play_loudspeakers(self, ctx: Context, stereo_separation: float = 8):
         """
         Play a sound that can be heard in a large radius by all players in range.
         """
@@ -133,7 +136,8 @@ class Note:
         stereo_offset = self.panning * stereo_separation // 2
         position = f"^{stereo_offset} ^ ^"
 
-        return self.play(
+        self.play(
+            ctx,
             execute_as="@e[tag=nbs_loudspeaker]",
             radius=radius,
             volume=volume,
@@ -141,7 +145,7 @@ class Note:
             position=position,
         )
 
-    def play_headphones(self):
+    def play_headphones(self, ctx: Context):
         """
         Play a sound that can be globally heard by players with headphones.
         """
@@ -156,7 +160,8 @@ class Note:
         tag = "nbs_headphones"
         position = f"0 64 {-self.panning * 256}"
 
-        return self.play(
+        self.play(
+            ctx, 
             min_volume=min_volume,
             volume=volume,
             tag=tag,
@@ -165,6 +170,7 @@ class Note:
 
     def play(
         self,
+        ctx: Context,
         execute_as: str | None = None,
         radius: float | None = None,
         tag: str | None = None,
@@ -172,7 +178,7 @@ class Note:
         position: str = "^ ^ ^",
         volume: float = 1,
         min_volume: float = 1,
-    ) -> str:
+    ):
         """Return the /playsound command to play the note for the given player."""
 
         selector_arguments = []
@@ -186,10 +192,28 @@ class Note:
         if execute_as is not None:
             execute_command = f"execute as {execute_as} at @n run"
 
-        playsound_command = f"playsound {self.instrument} {source} {target_selector} {position} {volume} {self.pitch} {min_volume}"
+        if self.pitch > 2:
+            # print("Warning pitch", self.pitch, "is larger than 2", source)
+            pitch = 2
+        else:
+            pitch = self.pitch
+        
+        if min_volume > 1:
+            # print("Warning min_volume", min_volume, "is larger than 1", target_selector)
+            min_volume = 1
+
+        playsound_command = f"playsound {self.instrument} {source} {target_selector} {position} {volume} {pitch} {min_volume}"
 
         full_command = " ".join([execute_command, playsound_command])
-        return full_command
+
+        mc = ctx.inject(Mecha)
+        runtime = ctx.inject(Runtime)
+
+        try:
+            runtime.commands.append(mc.parse(full_command, using="command"))
+        except Exception as e:
+            print(full_command)
+            raise e
 
 
 def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:

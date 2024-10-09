@@ -71,12 +71,12 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
         notes = song[1]
         function f"nbs:{song_name}":
             execute store result storage nbs:main songindex int 1 run scoreboard players get songindex nbs
-            function ~/chord/tick:
+            function f"nbs:{song_name}/chord/{tick}":
                 for note in notes:
                     instruments.add(note.instrument)
-                    note.play_speakers()
-                    note.play_loudspeakers()
-                    note.play_headphones()
+                    note.play_speakers(ctx)
+                    note.play_loudspeakers(ctx)
+                    note.play_headphones(ctx)
 
 for instrument in instruments:
     sound_path = EXTRA_NOTES.get(instrument)
