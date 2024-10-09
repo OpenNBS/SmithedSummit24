@@ -231,6 +231,8 @@ def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
     # Make sure instrument paths are valid
     for instrument in song.instruments:
         instrument.file = instrument.file.lower().replace(" ", "_")
+        if not instrument.file.startswith("minecraft/"):
+            print(f"Warning: Invalid instrument path: {instrument.file}")
 
     sounds = NBS_DEFAULT_INSTRUMENTS + [
         instrument.file.replace("minecraft/", "").replace(".ogg", "")
