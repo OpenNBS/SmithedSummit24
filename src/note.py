@@ -153,7 +153,7 @@ class Note:
         min_volume = self.volume
         volume = 0
         tag = "nbs_headphones"
-        position = f"0 64 {-self.panning * 256}"
+        position = f"0 0 {-self.panning * 256}"
 
         return self.play(
             min_volume=min_volume,
