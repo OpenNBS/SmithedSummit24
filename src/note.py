@@ -116,16 +116,16 @@ class Note:
         # The volume is multiplied by the `rolloff_factor` to make bass notes propagate further,
         # giving the impression of the song 'fading' away as the player moves away from the source.
 
-        decay_range = 48  # only bass notes will be audible at this range
         full_range = 32  # all notes will be audible at this range
+        decay_range = 48  # only bass notes will be audible at this range
 
-        min_volume = decay_range // 16
-        max_volume = full_range // 16
+        min_volume = full_range // 16
+        max_volume = decay_range // 16
 
         rolloff_factor = self.radius
 
         target_volume = min_volume + (max_volume - min_volume) * sigmoid(
-            rolloff_factor, -1, -0.5, 1
+            rolloff_factor * self.volume, -4.5, 0, 1
         )
 
         volume = target_volume
@@ -137,7 +137,6 @@ class Note:
         return self.play(
             radius=radius,
             volume=volume,
-            min_volume=min_volume,
             position=position,
         )
 
@@ -170,7 +169,7 @@ class Note:
         source: str = "record",
         position: str = "^ ^ ^",
         volume: float = 1,
-        min_volume: float = 1,
+        min_volume: float = 0,
     ):
         """Return the /playsound command to play the note for the given player."""
 
