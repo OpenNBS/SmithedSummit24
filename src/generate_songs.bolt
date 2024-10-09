@@ -74,9 +74,9 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
             function f"nbs:{song_name}/chord/{tick}":
                 for note in notes:
                     instruments.add(note.instrument)
-                    note.play_speakers(ctx)
-                    note.play_loudspeakers(ctx)
-                    note.play_headphones(ctx)
+                    execute as @e[tag=nbs_speaker] at @n run playsound f"{note.play_speakers()}"
+                    execute as @e[tag=nbs_loudspeaker] at @n run playsound f"{note.play_loudspeakers()}"
+                    playsound f"{note.play_headphones()}"
 
 for instrument in instruments:
     sound_path = EXTRA_NOTES.get(instrument)

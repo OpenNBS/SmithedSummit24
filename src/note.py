@@ -64,7 +64,7 @@ class Note:
     pitch: float = 1
     panning: float = 0
 
-    def play_speakers(self, ctx: Context, stereo_separation: float = 4):
+    def play_speakers(self, stereo_separation: float = 4) -> str:
         """
         Play a sound that can be heard in a small radius by all players in range.
         """
@@ -104,11 +104,9 @@ class Note:
         stereo_offset = self.panning * stereo_separation // 2
         position = f"^{stereo_offset} ^ ^"
 
-        self.play(
-            ctx, execute_as="@e[tag=nbs_speaker]", radius=radius, position=position
-        )
+        return self.play(radius=radius, position=position)
 
-    def play_loudspeakers(self, ctx: Context, stereo_separation: float = 8):
+    def play_loudspeakers(self, stereo_separation: float = 8) -> str:
         """
         Play a sound that can be heard in a large radius by all players in range.
         """
@@ -136,16 +134,14 @@ class Note:
         stereo_offset = self.panning * stereo_separation // 2
         position = f"^{stereo_offset} ^ ^"
 
-        self.play(
-            ctx,
-            execute_as="@e[tag=nbs_loudspeaker]",
+        return self.play(
             radius=radius,
             volume=volume,
             min_volume=min_volume,
             position=position,
         )
 
-    def play_headphones(self, ctx: Context):
+    def play_headphones(self):
         """
         Play a sound that can be globally heard by players with headphones.
         """
@@ -160,8 +156,7 @@ class Note:
         tag = "nbs_headphones"
         position = f"0 64 {-self.panning * 256}"
 
-        self.play(
-            ctx, 
+        return self.play(
             min_volume=min_volume,
             volume=volume,
             tag=tag,
@@ -170,8 +165,6 @@ class Note:
 
     def play(
         self,
-        ctx: Context,
-        execute_as: str | None = None,
         radius: float | None = None,
         tag: str | None = None,
         source: str = "record",
@@ -188,32 +181,18 @@ class Note:
             selector_arguments.append(f"tag={tag}")
         target_selector = f"@a[{','.join(selector_arguments)}]"
 
-        execute_command = ""
-        if execute_as is not None:
-            execute_command = f"execute as {execute_as} at @n run"
-
         if self.pitch > 2:
             # print("Warning pitch", self.pitch, "is larger than 2", source)
             pitch = 2
         else:
             pitch = self.pitch
-        
+
         if min_volume > 1:
             # print("Warning min_volume", min_volume, "is larger than 1", target_selector)
             min_volume = 1
 
-        playsound_command = f"playsound {self.instrument} {source} {target_selector} {position} {volume} {pitch} {min_volume}"
-
-        full_command = " ".join([execute_command, playsound_command])
-
-        mc = ctx.inject(Mecha)
-        runtime = ctx.inject(Runtime)
-
-        try:
-            runtime.commands.append(mc.parse(full_command, using="command"))
-        except Exception as e:
-            print(full_command)
-            raise e
+        args = f"{self.instrument} {source} {target_selector} {position} {volume} {pitch} {min_volume}"
+        return args
 
 
 def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
