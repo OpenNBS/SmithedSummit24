@@ -1,0 +1,47 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "minecraft:item/white_dye"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"custom_model_data": 1
+			},
+			"model": "animated_java:empty"
+		},
+		{
+			"predicate": {
+				"custom_model_data": 2
+			},
+			"model": "animated_java:item/music_speaker/default/stereo"
+		},
+		{
+			"predicate": {
+				"custom_model_data": 3
+			},
+			"model": "animated_java:item/music_speaker/default/antenna"
+		},
+		{
+			"predicate": {
+				"custom_model_data": 4
+			},
+			"model": "animated_java:item/music_speaker/default/speaker_1"
+		},
+		{
+			"predicate": {
+				"custom_model_data": 5
+			},
+			"model": "animated_java:item/music_speaker/default/speaker_2"
+		},
+		{
+			"predicate": {
+				"custom_model_data": 6
+			},
+			"model": "animated_java:item/music_speaker/default/details"
+		}
+	],
+	"animated_java": {
+		"music_speaker": [1, 2, 3, 4, 5, 6]
+	}
+}

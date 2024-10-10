@@ -1,0 +1,33 @@
+{
+	"textures": {
+		"0": "animated_java:item/music_speaker/music_speaker"
+	},
+	"display": {
+		"head": {
+			"rotation": [0, 180, 0]
+		}
+	},
+	"elements": [
+		{
+			"from": [-8, 7, 7],
+			"to": [8, 8, 7],
+			"rotation": {
+				"angle": -22.5,
+				"axis": "z",
+				"origin": [8, 8, 8]
+			},
+			"faces": {
+				"north": {
+					"uv": [13, 4, 13.25, 0],
+					"rotation": 270,
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [13, 0, 13.25, 4],
+					"rotation": 270,
+					"texture": "#0"
+				}
+			}
+		}
+	]
+}

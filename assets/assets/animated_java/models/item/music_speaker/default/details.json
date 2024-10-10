@@ -1,0 +1,27 @@
+{
+	"textures": {
+		"1": "animated_java:item/music_speaker/notes"
+	},
+	"display": {
+		"head": {
+			"rotation": [0, 180, 0]
+		}
+	},
+	"elements": [
+		{
+			"from": [7, 8, 7],
+			"to": [10.5, 9.5, 7],
+			"rotation": {
+				"angle": 0,
+				"axis": "y",
+				"origin": [8, 8, 8]
+			},
+			"faces": {
+				"north": {
+					"uv": [0, 0, 14, 6],
+					"texture": "#1"
+				}
+			}
+		}
+	]
+}

@@ -1,0 +1,43 @@
+{
+	"textures": {
+		"0": "animated_java:item/music_speaker/music_speaker"
+	},
+	"display": {
+		"head": {
+			"rotation": [0, 180, 0]
+		}
+	},
+	"elements": [
+		{
+			"from": [4.5, 4.5, 7],
+			"to": [11.5, 11.5, 9],
+			"rotation": {
+				"angle": 0,
+				"axis": "y",
+				"origin": [8, 8, 8]
+			},
+			"faces": {
+				"north": {
+					"uv": [14.25, 0.5, 16, 2.25],
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [13.75, 0.5, 14.25, 2.25],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [14.25, 0.5, 13.75, 2.25],
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [14.25, 0.5, 16, 0],
+					"texture": "#0"
+				},
+				"down": {
+					"uv": [14.25, 2.75, 16, 2.25],
+					"texture": "#0"
+				}
+			}
+		}
+	]
+}
