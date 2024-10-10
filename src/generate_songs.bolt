@@ -77,7 +77,7 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
                 execute as @e[tag=nbs_loudspeaker] at @s run playsound f"{note.play_loudspeakers()}"
                 playsound f"{note.play_headphones()}"
 
-    function f"nbs:song/{song_name}/{tick + 1}":
+    function f"nbs:song/{song_name}/{tick + 40}":
         function nbs:global/advance
 
 for instrument in instruments:
