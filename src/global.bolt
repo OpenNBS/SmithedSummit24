@@ -23,6 +23,7 @@ function ~/playback:
     $function nbs:song/$(name)/$(tick)
 
 function ~/change_song:
+    scoreboard players set songtime nbs -1
     execute store result storage nbs:main playing.index int 1 run scoreboard players get songindex nbs
     function nbs:global/change_song2 with storage nbs:main playing
 
@@ -34,7 +35,6 @@ song_count = len(glob.glob("songs/*.nbs"))
 
 #> Song Controls
 function ~/next:
-    scoreboard players set songtime nbs -1
     scoreboard players add songindex nbs 1
     execute if score songindex nbs matches f"{song_count}.." run scoreboard players set songindex nbs 0
     function ~/../change_song
@@ -46,7 +46,6 @@ function ~/play:
     scoreboard players set playing nbs 1
 
 function ~/prev:
-    scoreboard players set songtime nbs -1
     scoreboard players remove songindex nbs 1
     execute if score songindex nbs matches ..-1 run scoreboard players set songindex nbs (song_count - 1)
     function ~/../change_song
@@ -56,7 +55,6 @@ function ~/stop:
     scoreboard players set songtime nbs -1
 
 function ~/shuffle:
-    scoreboard players set songtime nbs -1
     scoreboard players operation prevsong nbs = songindex nbs
     execute store result score songindex nbs run random value (0, song_count - 1)
     execute if score songindex nbs = prevsong nbs run function ~/next
