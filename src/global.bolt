@@ -1,3 +1,5 @@
+import glob
+
 #> setup
 function_tag minecraft:load {
     "values": [(~/load)]
@@ -28,11 +30,13 @@ function ~/change_song2:
     $data modify storage nbs:main playing set from storage nbs:main songs[$(index)]
 
 
+song_count = len(glob.glob("songs/*.nbs"))
+
 #> Song Controls
 function ~/next:
     scoreboard players set songtime nbs -1
     scoreboard players add songindex nbs 1
-    execute if score songindex nbs matches 10.. run scoreboard players set songindex nbs 0
+    execute if score songindex nbs matches f"{song_count}.." run scoreboard players set songindex nbs 0
     function ~/../change_song
 
 function ~/pause:
@@ -44,7 +48,7 @@ function ~/play:
 function ~/prev:
     scoreboard players set songtime nbs -1
     scoreboard players remove songindex nbs 1
-    execute if score songindex nbs matches ..-1 run scoreboard players set songindex nbs 10
+    execute if score songindex nbs matches ..-1 run scoreboard players set songindex nbs (song_count - 1)
     function ~/../change_song
 
 function ~/stop:
@@ -54,6 +58,6 @@ function ~/stop:
 function ~/shuffle:
     scoreboard players set songtime nbs -1
     scoreboard players operation prevsong nbs = songindex nbs
-    execute store result score songindex nbs run random value 0..10
+    execute store result score songindex nbs run random value (0, song_count - 1)
     execute if score songindex nbs = prevsong nbs run function ~/next
     function ~/../change_song
