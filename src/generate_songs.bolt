@@ -78,7 +78,7 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
                 playsound f"{note.play_headphones()}"
 
     function f"nbs:song/{song_name}/{tick + 1}":
-        function nbs:global/shuffle
+        function nbs:global/advance
 
 for instrument in instruments:
     sound_path = EXTRA_NOTES.get(instrument)

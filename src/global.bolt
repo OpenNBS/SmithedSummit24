@@ -57,5 +57,9 @@ function ~/stop:
 function ~/shuffle:
     scoreboard players operation prevsong nbs = songindex nbs
     execute store result score songindex nbs run random value (0, song_count - 1)
-    execute if score songindex nbs = prevsong nbs run function ~/next
+    execute if score songindex nbs = prevsong nbs run function ~/../next
     function ~/../change_song
+
+function ~/advance:
+    execute if score shuffle nbs matches 0 run function ~/../next
+    execute if score shuffle nbs matches 1 run function ~/../shuffle
