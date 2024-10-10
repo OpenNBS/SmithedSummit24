@@ -7,6 +7,8 @@ function_tag minecraft:load {
 
 append function ~/load:
     scoreboard objectives add nbs dummy
+    scoreboard players set playing nbs 1
+    scoreboard players set shuffle nbs 1
 
 
 #> tick the song time
