@@ -12,8 +12,6 @@ from typing import Any, Iterator, List, Tuple
 import pynbs
 from beet import Context
 from beet.core.utils import FileSystemPath
-from bolt import Runtime
-from mecha import Mecha
 
 NBS_DEFAULT_INSTRUMENTS = [
     "block.note_block.harp",
