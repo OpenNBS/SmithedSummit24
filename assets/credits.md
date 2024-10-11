@@ -1,4 +1,4 @@
-The note block songs played throught the Smithed Summit have been created and submitted by members of the note block community. Their submissions and links can be found here!
+The note block songs played throughout the Smithed Summit have been created and submitted by members of the note block community. Their submissions and links can be found here!
 
 ### Bentroen
 Submissions:
@@ -26,6 +26,7 @@ Submissions:
 - Toby Fox - Ruins
 - Item Asylum - SMILER
 
+YouTube: https://www.youtube.com/@kaliumi
 Discord username: `kaliumi`
 Minecraft username: `KaliumI`
 
@@ -35,6 +36,7 @@ Submissions:
 - Laura Shigihara - Crazy Dave (Plants vs. Zombies)
 - Shadrow - Spider Girl
 
+YouTube: https://youtube.com/@kostermoltas
 Discord username: `kostermoltas`
 Minecraft username: `KosterMoltas`
 
@@ -52,6 +54,7 @@ Minecraft username: `NoteBlockMatt`
 Submissions:
 - PlayfulPotato - GenerationNebula
 
+YouTube: https://www.youtube.com/@PlayfulPotatwo
 Discord username: `playfulpotato`
 Minecraft username: `LoginatorV`
 
