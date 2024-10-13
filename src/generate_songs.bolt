@@ -93,15 +93,15 @@ for instrument in instruments:
         "block.note_block."
     ):
         instrument_resource = instrument.replace("/", "_")
-        # ctx.assets["minecraft"].sound_config.merge(
-        #     SoundConfig(
-        #         {
-        #             instrument_resource: {
-        #                 "sounds": [instrument],
-        #                 "subtitle": "subtitles.block.note_block.note",
-        #             }
-        #         }
-        #     )
-        # )
+        ctx.assets["minecraft"].sound_config.merge(
+            SoundConfig(
+                {
+                    instrument_resource: {
+                        "sounds": [instrument],
+                        "subtitle": "subtitles.block.note_block.note",
+                    }
+                }
+            )
+        )
 
 print("🎉 LGTM")
