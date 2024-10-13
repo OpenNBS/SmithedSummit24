@@ -38,10 +38,10 @@ function ~/change_song2:
 #> Effects
 
 function ~/title:
-    execute as @e[tag=nbs_speaker] at @s run title @a[distance=..12] actionbar ["",{"text":"Now Playing: ","color":"green"},{"text":"$(formatted_string)","color":"white"}]
-    execute as @e[tag=nbs_loudspeaker] at @s run title @a[distance=..48] actionbar ["",{"text":"Now Playing: ","color":"green"},{"text":"$(formatted_string)","color":"white"}]
-    title @a[tag=nbs_headphones] actionbar ["",{"text":"Now Playing: ","color":"green"},{"text":"$(formatted_string)","color":"white"}]
-    execute as @e[tag=aj.music_speaker.root] on passengers if entity @s[tag=aj.music_speaker.bone.text_display] run data modify entity @s text set value ["",{"text":"Now Playing: ","color":"green"},{"text":"$(formatted_string)","color":"white"}]
+    execute as @e[tag=nbs_speaker] at @s run title @a[distance=..12] actionbar {"text":"","extra":[{"text":"Now Playing: ","color":"green"},{"text":"$(formatted_string)","color":"white"}]}
+    execute as @e[tag=nbs_loudspeaker] at @s run title @a[distance=..48] actionbar {"text":"","extra":[{"text":"Now Playing: ","color":"green"},{"text":"$(formatted_string)","color":"white"}]}
+    title @a[tag=nbs_headphones] actionbar {"text":"","extra":[{"text":"Now Playing: ","color":"green"},{"text":"$(formatted_string)","color":"white"}]}
+    execute as @e[tag=aj.music_speaker.root] on passengers if entity @s[tag=aj.music_speaker.bone.text_display] run data modify entity @s text set value {"text":"","extra":[{"text":"Now Playing: ","color":"green"},{"text":"$(formatted_string)","color":"white"}]}
 
 function ~/beat:
     execute store result storage nbs:main beat.beat int 1 run random value 1..4
