@@ -40,6 +40,14 @@ YouTube: https://youtube.com/@kostermoltas
 Discord username: `kostermoltas`
 Minecraft username: `KosterMoltas`
 
+## noteblocc
+Submissions:
+- Tatsuya Kitani - Ao no Sumika (Jujutsu Kaisen)
+
+YouTube: https://youtube.com/@noteblockk
+Discord username: `seninsophile`
+Minecraft username: `Noteblocc`
+
 ### NoteBlockMatt [YT]
 Submissions:
 - Toby Fox - Ruins (Undertale) - cover by NoteBlockMatt
