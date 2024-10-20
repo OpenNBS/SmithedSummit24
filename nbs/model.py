@@ -26,13 +26,18 @@ no_shade_textures = ["nbw_*"]
 EMISSIVE_ALPHA = 254
 NO_SHADE_ALPHA = 253
 
+CMD_OFFSET = 48184
+
 
 def generate_model_predicates(parent: str, models: list[str]) -> Model:
     return Model(
         {
             "parent": parent,
             "overrides": [
-                {"predicate": {"custom_model_data": cmd + 1}, "model": f"nbs:{model}"}
+                {
+                    "predicate": {"custom_model_data": str(CMD_OFFSET) + str(cmd)},
+                    "model": f"nbs:{model}",
+                }
                 for cmd, model in enumerate(models)
             ],
         }
