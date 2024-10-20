@@ -15,6 +15,8 @@ models = [
     "headphones",
     "records_double",
     "records_triple",
+    "piano",
+    "guitar",
 ]
 
 emissive_textures = ["scroll_panel_*", "note*"]
