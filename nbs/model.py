@@ -1,7 +1,7 @@
 from fnmatch import fnmatch
 
 from beet import Context, Model, Texture, TextureMcmeta
-from PIL import Image
+from PIL import Image, ImageChops
 
 models = [
     "nbw_block",
@@ -109,16 +109,20 @@ def generate_scrolling_animation(ctx: Context) -> None:
 
 
 def apply_emissive_textures(ctx: Context) -> None:
+
+    def multiply_alpha(img: Image.Image, alpha: int) -> Image.Image:
+        if img.mode != "RGBA":
+            img = img.convert("RGBA")
+        return ImageChops.multiply(
+            img, Image.new("RGBA", img.size, (255, 255, 255, alpha))
+        )
+
     for name, texture in ctx.assets.textures.items():
         name = name.split("/")[-1]
         if any(fnmatch(name, pattern) for pattern in emissive_textures):
-            if texture.image.mode != "RGBA":
-                texture.image = texture.image.convert("RGBA")
-            texture.image.putalpha(EMISSIVE_ALPHA)
+            texture.image = multiply_alpha(texture.image, EMISSIVE_ALPHA)
         if any(fnmatch(name, pattern) for pattern in no_shade_textures):
-            if texture.image.mode != "RGBA":
-                texture.image = texture.image.convert("RGBA")
-            texture.image.putalpha(NO_SHADE_ALPHA)
+            texture.image = multiply_alpha(texture.image, NO_SHADE_ALPHA)
 
 
 def create_note_models(ctx: Context) -> None:
