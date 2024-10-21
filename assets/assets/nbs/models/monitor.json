@@ -103,7 +103,7 @@
 			"to": [14, 14, 1.9],
 			"rotation": {"angle": 0, "axis": "y", "origin": [2, 4, 1.9]},
 			"faces": {
-				"north": {"uv": [0, 1, 16, 15], "texture": "#content"}
+				"north": {"uv": [0, 0, 16, 16], "texture": "#content"}
 			}
 		}
 	],

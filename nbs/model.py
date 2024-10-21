@@ -31,7 +31,7 @@ NO_SHADE_ALPHA = 253
 
 CMD_OFFSET = 48184
 
-MONITOR_TEXTURE_SCALE = 512
+MONITOR_TEXTURE_SIZE = 512
 
 
 def generate_model_predicates(parent: str, models: list[str]) -> Model:
@@ -150,12 +150,11 @@ def create_monitor_models(ctx: Context) -> None:
 
     global models
     for texture in monitor_variants:
-        scale = MONITOR_TEXTURE_SCALE
-        src_img = ctx.assets.textures[texture].image
-        dst_img = Image.new("RGBA", (scale, scale), (0, 0, 0, 0))
-        resized = src_img.resize((scale, scale - scale // 16 * 2))
-        dst_img.paste(resized, (0, scale // 16))
-        ctx.assets.textures[texture] = Texture(dst_img)
+        size = MONITOR_TEXTURE_SIZE
+        # The monitor is 12x10 pixels. We stretch the image to a 512x512 texture
+        src_img: Image.Image = ctx.assets.textures[texture].image
+        resized_img = src_img.resize((size, size), Image.Resampling.LANCZOS)
+        ctx.assets.textures[texture] = Texture(resized_img)
 
     for i in range(8):
         texture = f"nbs:block/monitor_{i}"
