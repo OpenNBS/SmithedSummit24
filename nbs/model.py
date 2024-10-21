@@ -7,7 +7,7 @@ models = [
     "nbw_block",
     "nbw_text",
     "scroll_panel",
-    "note_block_flat",
+    "flat_note_block",
     "gramophone_base",
     "gramophone",
     "record_player",

@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:block/cube_all",
     "textures": {
-        "all": "nbs:block/note_block_flat"
+        "all": "nbs:block/flat_note_block"
     }
 }
