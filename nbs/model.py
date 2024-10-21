@@ -36,7 +36,7 @@ def generate_model_predicates(parent: str, models: list[str]) -> Model:
             "parent": parent,
             "overrides": [
                 {
-                    "predicate": {"custom_model_data": str(CMD_OFFSET) + str(cmd)},
+                    "predicate": {"custom_model_data": CMD_OFFSET + cmd + 1},
                     "model": f"nbs:{model}",
                 }
                 for cmd, model in enumerate(models)
