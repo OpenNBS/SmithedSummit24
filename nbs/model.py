@@ -20,6 +20,8 @@ models = [
     "open_sign",
 ]
 
+models_cmd = {model: i for i, model in enumerate(models)}
+
 emissive_textures = ["scroll_panel_*", "note*", "monitor_*", "open_sign"]
 
 no_shade_textures = ["nbw_*"]
@@ -41,7 +43,7 @@ def generate_model_predicates(parent: str, models: list[str]) -> Model:
                     "predicate": {"custom_model_data": CMD_OFFSET + cmd + 1},
                     "model": f"nbs:{model}",
                 }
-                for cmd, model in enumerate(models)
+                for model, cmd in models_cmd.items()
             ],
         }
     )
@@ -125,7 +127,7 @@ def create_note_models(ctx: Context) -> None:
     )
 
     global models
-    for texture in note_variants:
+    for i, texture in enumerate(note_variants):
         note_model = Model(
             {
                 "parent": "nbs:note_base",
@@ -134,7 +136,7 @@ def create_note_models(ctx: Context) -> None:
         )
         filename = texture.split("/")[-1]
         ctx.assets.models[f"nbs:{filename}"] = note_model
-        models.append(filename)
+        models_cmd[filename] = i + 100
 
 
 def create_monitor_models(ctx: Context) -> None:
@@ -164,7 +166,7 @@ def create_monitor_models(ctx: Context) -> None:
         filename = texture.split("/")[-1]
         ctx.assets.models[f"nbs:{filename}"] = monitor_model
 
-        models.append(f"monitor_{i}")
+        models_cmd[f"monitor_{i}"] = i + 200
 
 
 def beet_default(ctx: Context):
