@@ -17,6 +17,7 @@ models = [
     "records_triple",
     "piano",
     "guitar",
+    "open_sign",
 ]
 
 emissive_textures = ["scroll_panel_*", "note*"]
