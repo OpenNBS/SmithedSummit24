@@ -29,6 +29,8 @@ NO_SHADE_ALPHA = 253
 
 CMD_OFFSET = 48184
 
+MONITOR_TEXTURE_SCALE = 512
+
 
 def generate_model_predicates(parent: str, models: list[str]) -> Model:
     return Model(
@@ -135,8 +137,39 @@ def create_note_models(ctx: Context) -> None:
         models.append(filename)
 
 
+def create_monitor_models(ctx: Context) -> None:
+    monitor_variants = filter(
+        lambda name: name.startswith("nbs:block/monitor_"), ctx.assets.textures
+    )
+
+    global models
+    for texture in monitor_variants:
+        scale = MONITOR_TEXTURE_SCALE
+        src_img = ctx.assets.textures[texture].image
+        dst_img = Image.new("RGBA", (scale, scale), (0, 0, 0, 0))
+        resized = src_img.resize((scale, scale - scale // 16 * 2))
+        dst_img.paste(resized, (0, scale // 16))
+        ctx.assets.textures[texture] = Texture(dst_img)
+
+    for i in range(8):
+        texture = f"nbs:block/monitor_{i}"
+        if texture not in ctx.assets.textures:
+            texture = "nbs:block/monitor_0"
+        monitor_model = Model(
+            {
+                "parent": "nbs:monitor",
+                "textures": {"content": f"nbs:block/monitor_{i}"},
+            }
+        )
+        filename = texture.split("/")[-1]
+        ctx.assets.models[f"nbs:{filename}"] = monitor_model
+
+        models.append(f"monitor_{i}")
+
+
 def beet_default(ctx: Context):
     create_note_models(ctx)
+    create_monitor_models(ctx)
 
     ctx.assets["minecraft:item/note_block"] = generate_model_predicates(
         "block/note_block", models
