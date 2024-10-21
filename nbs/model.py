@@ -20,7 +20,7 @@ models = [
     "open_sign",
 ]
 
-emissive_textures = ["scroll_panel_*", "note*"]
+emissive_textures = ["scroll_panel_*", "note*", "monitor_*", "open_sign"]
 
 no_shade_textures = ["nbw_*"]
 
