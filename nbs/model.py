@@ -109,7 +109,6 @@ def generate_scrolling_animation(ctx: Context) -> None:
 
 
 def apply_emissive_textures(ctx: Context) -> None:
-
     def multiply_alpha(img: Image.Image, alpha: int) -> Image.Image:
         if img.mode != "RGBA":
             img = img.convert("RGBA")

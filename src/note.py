@@ -10,7 +10,6 @@ from dataclasses import dataclass
 from typing import Any, Iterator, List, Tuple
 
 import pynbs
-from beet import Context
 from beet.core.utils import FileSystemPath
 
 NBS_DEFAULT_INSTRUMENTS = [
@@ -173,7 +172,7 @@ class Note:
 
         selector_arguments = []
         if radius is not None:
-            selector_arguments.append(f"distance=..{radius}")
+            selector_arguments.append(f"distance=..{radius:.2f}")
         if tag is not None:
             selector_arguments.append(f"tag={tag}")
         target_selector = f"@a[{','.join(selector_arguments)}]"
@@ -188,7 +187,7 @@ class Note:
             # print("Warning min_volume", min_volume, "is larger than 1", target_selector)
             min_volume = 1
 
-        args = f"{self.instrument} {source} {target_selector} {position} {volume} {pitch} {min_volume}"
+        args = f"{self.instrument} {source} {target_selector} {position} {volume} {pitch:.5f} {min_volume}"
         return args
 
 
