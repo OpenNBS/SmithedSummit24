@@ -5,6 +5,7 @@ data_pack:
   description: "Data pack for NBS on the Smithed Summit 2024"
   load:
     - data/nbs/module: src
+    - data: src/data
   zipped: true
 
 resource_pack:
