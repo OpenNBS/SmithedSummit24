@@ -1,7 +1,7 @@
 import glob
 
 #> setup
-function_tag minecraft:load {
+merge function_tag minecraft:load {
     "values": [(~/load)]
 }
 
@@ -12,7 +12,7 @@ append function ~/load:
 
 
 #> tick the song time
-function_tag minecraft:tick {
+merge function_tag minecraft:tick {
     "values": [(~/tick)]
 }
 
