@@ -40,6 +40,9 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
             at @e[tag=nbs_loudspeaker] function ~/loudspeaker
             at @a[tag=nbs_headphones] function ~/headphones
 
+            if tick % 4 == 0:
+                function nbs:global/beat
+
             for note in notes:
                 ctx.meta["instruments"].add(note.instrument)
 
