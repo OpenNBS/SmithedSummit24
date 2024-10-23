@@ -170,6 +170,8 @@ class Note:
     ):
         """Return the /playsound command to play the note for the given player."""
 
+        instrument = self.instrument.replace("/", "_")
+
         selector_arguments = []
         if radius is not None:
             selector_arguments.append(f"distance=..{radius:.2f}")
@@ -187,7 +189,7 @@ class Note:
             # print("Warning min_volume", min_volume, "is larger than 1", target_selector)
             min_volume = 1
 
-        args = f"{self.instrument} {source} {target_selector} {position} {volume} {pitch:.5f} {min_volume}"
+        args = f"{instrument} {source} {target_selector} {position} {volume:.3f} {pitch:.5f} {min_volume:.3f}"
         return args
 
 
@@ -197,27 +199,32 @@ def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
     song = pynbs.read(filename)
 
     # Quantize notes to nearest tick (pigstep always exports at 20 t/s)
-    # Remove notes outside the 6-octave range
-    for tick, chord in song:
-        new_tick = round(tick * 20 / song.header.tempo)
-        for note in chord:
-            note.tick = new_tick
-            note_pitch = get_pitch(note)
-            is_custom_instrument = note.instrument >= song.header.default_instruments
-            is_2_octave = 33 <= note_pitch <= 57
-            is_6_octave = 9 <= note_pitch <= 81
+    # Remove vanilla instrument notes outside the 6-octave range
+    # Remove custom instrument notes outside the 2-octave range
+    for note in song.notes:
+        new_tick = round(note.tick * 20 / song.header.tempo)
+        note.tick = new_tick
+        note_pitch = note.key + note.pitch / 100
+        is_custom_instrument = note.instrument >= song.header.default_instruments
+        is_2_octave = 33 <= note_pitch <= 57
+        is_6_octave = 9 <= note_pitch <= 81
 
-            if is_custom_instrument and not is_2_octave:
-                # print(
-                #    f"Warning: Custom instrument out of 2-octave range at {note.tick},{note.layer}: {note_pitch}"
-                # )
-                continue
+        if note.instrument == 23 and note.tick > 1100:
+            print(note, note_pitch, is_custom_instrument, is_2_octave, is_6_octave)
 
-            if not is_custom_instrument and not is_6_octave:
-                # print(
-                #    f"Warning: Vanilla instrument out of 6-octave range at {note.tick},{note.layer}: {note_pitch}"
-                # )
-                continue
+        if is_custom_instrument and not is_2_octave:
+            # print(
+            #    f"Warning: Custom instrument out of 2-octave range at {note.tick},{note.layer}: {note_pitch}"
+            # )
+            song.notes.remove(note)
+
+        if not is_custom_instrument and not is_6_octave:
+            # print(
+            #    f"Warning: Vanilla instrument out of 6-octave range at {note.tick},{note.layer}: {note_pitch}"
+            # )
+            song.notes.remove(note)
+
+    print(" After", len(song.notes))
 
     # Ensure that there are as many layers as the last layer with a note
     max_layer = max(note.layer for note in song.notes)
@@ -240,7 +247,7 @@ def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
 
         layer = song.layers[note.layer]
 
-        sound = sounds[note.instrument].replace("/", "_")
+        sound = sounds[note.instrument]
         pitch = note.key + (note.pitch / 100)
         octave_suffix = "_-1" if pitch < 33 else "_1" if pitch > 57 else ""
         source = f"{sound}{octave_suffix}"
