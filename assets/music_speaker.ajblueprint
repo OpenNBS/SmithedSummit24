@@ -1700,7 +1700,7 @@
 							"channel": "commands",
 							"data_points": [
 								{
-									"commands": "particle minecraft:note ~ ~1 ~",
+									"commands": "particle minecraft:note ~ ~1 ~ 0 0 0 1 1",
 									"execute_condition": "",
 									"repeat": false,
 									"repeat_frequency": 1
@@ -2170,7 +2170,7 @@
 							"channel": "commands",
 							"data_points": [
 								{
-									"commands": "particle minecraft:note ~ ~1 ~",
+									"commands": "particle minecraft:note ~ ~1 ~ 0 0 0 1 1",
 									"execute_condition": "",
 									"repeat": false,
 									"repeat_frequency": 1
@@ -2640,7 +2640,7 @@
 							"channel": "commands",
 							"data_points": [
 								{
-									"commands": "particle minecraft:note ~ ~1 ~",
+									"commands": "particle minecraft:note ~ ~1 ~ 0 0 0 1 1",
 									"execute_condition": "",
 									"repeat": false,
 									"repeat_frequency": 1
@@ -3110,7 +3110,7 @@
 							"channel": "commands",
 							"data_points": [
 								{
-									"commands": "particle minecraft:note ~ ~1 ~",
+									"commands": "particle minecraft:note ~ ~1 ~ 0 0 0 1 1",
 									"execute_condition": "",
 									"repeat": false,
 									"repeat_frequency": 1
