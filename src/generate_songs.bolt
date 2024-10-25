@@ -45,9 +45,9 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
         notes = chord[1]
             #data modify storage nbs:main playing set from storage nbs:main songs[0]
         function f"nbs:song/{song_name}/{tick}":
-            at @e[tag=nbs_speaker] function ~/speaker
-            at @e[tag=nbs_loudspeaker] function ~/loudspeaker
-            function ~/headphones
+            at @e[type=item_display,tag=nbs_speaker] if entity @a[limit=1,distance=..12] function ~/speaker
+            at @e[type=item_display,tag=nbs_loudspeaker] if entity @a[limit=1,distance=..48] function ~/loudspeaker
+            if entity @a[limit=1,tag=nbs_headphones] function ~/headphones
 
             if tick % 4 == 0:
                 function nbs:global/beat
