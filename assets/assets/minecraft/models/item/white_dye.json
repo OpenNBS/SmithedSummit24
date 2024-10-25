@@ -6,37 +6,37 @@
 	"overrides": [
 		{
 			"predicate": {
-				"custom_model_data": 1
+				"custom_model_data": 18481
 			},
 			"model": "animated_java:empty"
 		},
 		{
 			"predicate": {
-				"custom_model_data": 2
+				"custom_model_data": 18482
 			},
 			"model": "animated_java:item/music_speaker/default/stereo"
 		},
 		{
 			"predicate": {
-				"custom_model_data": 3
+				"custom_model_data": 18483
 			},
 			"model": "animated_java:item/music_speaker/default/antenna"
 		},
 		{
 			"predicate": {
-				"custom_model_data": 4
+				"custom_model_data": 18484
 			},
 			"model": "animated_java:item/music_speaker/default/speaker_1"
 		},
 		{
 			"predicate": {
-				"custom_model_data": 5
+				"custom_model_data": 18485
 			},
 			"model": "animated_java:item/music_speaker/default/speaker_2"
 		},
 		{
 			"predicate": {
-				"custom_model_data": 6
+				"custom_model_data": 18486
 			},
 			"model": "animated_java:item/music_speaker/default/details"
 		}
