@@ -1,6 +1,6 @@
 __all__ = [
     "Note",
-    "load_nbs",
+    "get_notes",
     "get_pitch",
 ]
 
@@ -193,10 +193,8 @@ class Note:
         return args
 
 
-def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
+def get_notes(song: pynbs.File) -> Iterator[Tuple[int, List["Note"]]]:
     """Yield all the notes from the given nbs file."""
-
-    song = pynbs.read(filename)
 
     # Quantize notes to nearest tick (pigstep always exports at 20 t/s)
     # Remove vanilla instrument notes outside the 6-octave range

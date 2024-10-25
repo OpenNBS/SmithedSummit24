@@ -1,16 +1,15 @@
 from pathlib import Path
 from beet.core.utils import normalize_string
 from beet import Sound, SoundConfig
+import pynbs
 
-from src.note import load_nbs
+from src.note import get_notes
 
 SOURCE = "record"
 
 SOUNDS = Path("sounds")
 SONGS = Path("songs")
 
-def generate_formatted_string(song_name: str):
-    return "TODO"
 
 # memo:
 ctx.meta["instruments"] = set()
@@ -19,19 +18,29 @@ append function ~/../global/load:
     data modify storage nbs:main songs set value []
 
 for song_stuff in enumerate(SONGS.glob("*.nbs")):
-    path = song_stuff[1]
-    song_name = normalize_string(path.stem.split(" - ")[0].split("(")[0])
-    print("processing", song_name)
     song_index = song_stuff[0]
+    path = song_stuff[1]
+    song = pynbs.read(path)
+
+    song_name = normalize_string(path.stem.split(" - ")[0].split("(")[0])
+    formatted_string = path.stem
+    title = song.header.song_name
+    author = song.header.song_author
+    original_author = song.header.original_author
+
+    print("processing", song_name)
 
     append function ~/../global/load:
         data modify storage nbs:main songs append value {
             "name": song_name,
             "index": song_index,
-            "formatted_string": generate_formatted_string(song_name)
+            "formatted_string": formatted_string,
+            "title": title,
+            "author": author,
+            "original_author": original_author,
         }
     
-    for chord in load_nbs(path):
+    for chord in get_notes(song):
         tick = chord[0]
         notes = chord[1]
             #data modify storage nbs:main playing set from storage nbs:main songs[0]
