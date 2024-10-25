@@ -49,7 +49,7 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
             at @e[type=item_display,tag=nbs_loudspeaker] if entity @a[limit=1,distance=..48] function ~/loudspeaker
             if entity @a[limit=1,tag=nbs_headphones] function ~/headphones
 
-            if tick % 4 == 0:
+            if tick % 8 == 0:
                 function nbs:global/beat
 
             for note in notes:
