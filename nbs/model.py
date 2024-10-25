@@ -22,7 +22,7 @@ models = [
 
 models_cmd = {model: i for i, model in enumerate(models)}
 
-emissive_textures = ["scroll_panel_*", "note*", "monitor_*", "open_sign"]
+emissive_textures = ["scroll_panel_*", "note_sign_*", "monitor_*", "open_sign"]
 
 no_shade_textures = ["nbw_*"]
 
@@ -126,7 +126,7 @@ def apply_emissive_textures(ctx: Context) -> None:
 
 def create_note_models(ctx: Context) -> None:
     note_variants = filter(
-        lambda name: name.startswith("nbs:block/note"), ctx.assets.textures
+        lambda name: name.startswith("nbs:block/note_sign_"), ctx.assets.textures
     )
 
     global models
