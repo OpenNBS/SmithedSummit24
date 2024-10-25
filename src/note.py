@@ -209,9 +209,6 @@ def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
         is_2_octave = 33 <= note_pitch <= 57
         is_6_octave = 9 <= note_pitch <= 81
 
-        if note.instrument == 23 and note.tick > 1100:
-            print(note, note_pitch, is_custom_instrument, is_2_octave, is_6_octave)
-
         if is_custom_instrument and not is_2_octave:
             # print(
             #    f"Warning: Custom instrument out of 2-octave range at {note.tick},{note.layer}: {note_pitch}"
@@ -223,8 +220,6 @@ def load_nbs(filename: FileSystemPath) -> Iterator[Tuple[int, List["Note"]]]:
             #    f"Warning: Vanilla instrument out of 6-octave range at {note.tick},{note.layer}: {note_pitch}"
             # )
             song.notes.remove(note)
-
-    print(" After", len(song.notes))
 
     # Ensure that there are as many layers as the last layer with a note
     max_layer = max(note.layer for note in song.notes)
