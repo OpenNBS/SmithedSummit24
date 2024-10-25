@@ -112,9 +112,10 @@ def apply_emissive_textures(ctx: Context) -> None:
     def multiply_alpha(img: Image.Image, alpha: int) -> Image.Image:
         if img.mode != "RGBA":
             img = img.convert("RGBA")
-        return ImageChops.multiply(
-            img, Image.new("RGBA", img.size, (255, 255, 255, alpha))
-        )
+        # set the alpha value to the desired value where it is not 0
+        mask = Image.eval(img.split()[3], lambda a: 0 if a == 0 else alpha)
+        img.putalpha(mask)
+        return img
 
     for name, texture in ctx.assets.textures.items():
         name = name.split("/")[-1]
