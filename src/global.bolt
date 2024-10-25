@@ -31,8 +31,8 @@ function ~/change_song:
 
 function ~/change_song2:
     $data modify storage nbs:main playing set from storage nbs:main songs[$(index)]
-    execute as @e[tag=aj.music_speaker.root] on passengers if entity @s[tag=aj.music_speaker.bone.text_display] run data modify entity @s text set value '{"text":"$(formatted_string)","color":"green"}'
-    function nbs:global/title
+    $execute as @e[tag=aj.music_speaker.root] on passengers if entity @s[tag=aj.music_speaker.bone.text_display] run data modify entity @s text set value '{"text":"$(formatted_string)","color":"green"}'
+    function nbs:global/title with storage nbs:main playing
     
 
 #> Effects
