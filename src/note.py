@@ -262,8 +262,18 @@ def get_notes(song: pynbs.File) -> Iterator[Tuple[int, List["Note"]]]:
             pitch=pitch,
         )
 
+    output = {}
+
+    for tick in range(0, song.header.song_length, 8):
+        output[tick] = []
+
     for tick, chord in song:
-        yield tick, [get_note(note) for note in chord]
+        if tick not in output:
+            output[tick] = []
+        output[tick].extend(get_note(note) for note in chord)
+
+    for tick, notes in output.items():
+        yield tick, notes
 
 
 def get_panning(note: Any, layer: Any) -> float:
