@@ -34,7 +34,12 @@ CMD_OFFSET = 48184
 MONITOR_TEXTURE_SIZE = 512
 
 
-def generate_model_predicates(parent: str, models: list[str]) -> Model:
+def generate_model_predicates(parent: str, models: list[str] | dict[str, int]) -> Model:
+    if isinstance(models, list):
+        models_cmd = {model: cmd for cmd, model in enumerate(models)}
+    else:
+        models_cmd = models
+
     return Model(
         {
             "parent": parent,
@@ -177,7 +182,11 @@ def beet_default(ctx: Context):
     create_monitor_models(ctx)
 
     ctx.assets["minecraft:item/note_block"] = generate_model_predicates(
-        "block/note_block", models
+        "block/note_block", models_cmd
     )
+    ctx.assets["minecraft:item/carved_pumpkin"] = generate_model_predicates(
+        "block/carved_pumpkin", ["headphones"]
+    )
+
     generate_scrolling_animation(ctx)
     apply_emissive_textures(ctx)

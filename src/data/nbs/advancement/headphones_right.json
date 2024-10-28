@@ -3,16 +3,14 @@
         "requirement": {
             "trigger": "minecraft:player_interacted_with_entity",
             "conditions": {
-                "entity": [
-                    {
-                        "type": "minecraft:interaction",
-                        "tag": "nbs_headphones"
-                    }
-                ]
+                "entity": {
+                    "type": "minecraft:interaction",
+                    "nbt": "{Tags:['nbs_headphone_collectible']}"
+                }
             }
         }
     },
     "rewards": {
-        "function": "nbs:headphones_right"
+        "function": "nbs:interaction/headphones_give"
     }
 }
