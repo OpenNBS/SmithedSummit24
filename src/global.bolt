@@ -44,6 +44,7 @@ function ~/title:
     $execute as @e[type=item_display,tag=aj.music_speaker.root] on passengers if entity @s[tag=aj.music_speaker.bone.text_display] run data modify entity @s text set value {"text":"","extra":[{"text":"🎵 Now Playing: ","color":"green"},{"text":"$(formatted_string)","color":"white"}]}
 
 function ~/beat:
+    execute at @a[tag=nbs_headphones] run particle note ~ ~2.25 ~ 0 0 0 1 1
     execute store result storage nbs:main beat.beat int 1 run random value 1..4
     function nbs:global/beat2 with storage nbs:main beat
 
