@@ -16,7 +16,7 @@ resource_pack:
 
 require: [bolt]
 pipeline:
-  - nbs.model
+  - src.model
   - mecha
   - src.sound_config
 
