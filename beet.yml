@@ -19,6 +19,7 @@ pipeline:
   - src.model
   - mecha
   - src.sound_config
+  - src.interaction
 
 output: dist
 
