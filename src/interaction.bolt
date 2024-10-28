@@ -5,3 +5,16 @@ function ~/headphones_give:
     tag @s add nbs_headphones_given
     advancement revoke @s only nbs:headphones_left
     advancement revoke @s only nbs:headphones_right
+
+function ~/headphones_equip:
+    tag @s add nbs_headphones
+    function ~/../title with storage nbs:main playing
+    advancement revoke @s only nbs:headphones_equip
+    function ~/../headphones_equip2 with storage nbs:main playing
+
+function ~/headphones_equip2:
+    $title @s actionbar {"text":"","extra":[{"text":"Listening to: ","color":"green"},{"text":"$(formatted_string)","color":"white"}]}
+
+function ~/headphones_unequip:
+    tag @s remove nbs_headphones
+    advancement revoke @s only nbs:headphones_unequip
