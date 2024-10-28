@@ -1,3 +1,4 @@
+import json
 from dataclasses import dataclass
 
 from beet import Advancement, Context, Function
@@ -7,8 +8,8 @@ from beet import Advancement, Context, Function
 class Interaction:
     id: str
     tag_name: str
-    function_left: str | None = None
-    function_right: str | None = None
+    function_left: Function | None = None
+    function_right: Function | None = None
 
 
 interactions = [
@@ -46,28 +47,49 @@ def generate_advancement(ctx: Context, interaction: Interaction):
                         },
                     }
                 },
-                "rewards": {"function": f"nbs:interaction/{function}"},
+                "rewards": {"function": function},
             }
         )
 
-    if not (interaction.function_left or interaction.function_right):
-        function_left = function_right = interaction.id
+    if interaction.function_left is interaction.function_right:
+        function_left = function_right = f"nbs:interaction/{interaction.id}"
     else:
-        function_left = interaction.function_left
-        function_right = interaction.function_right
+        function_left = f"nbs:interaction/{interaction.id}_left"
+        function_right = f"nbs:interaction/{interaction.id}_right"
 
     if function_left:
-        ctx.data[f"nbs:{interaction.id}_left"] = get_advancement("left", function_left)
-        function_file = ctx.data.functions[f"nbs:interaction/{function_left}"]
-        function_file.append(f"advancement revoke @s only nbs:{interaction.id}_left")
-    if function_right:
-        ctx.data[f"nbs:{interaction.id}_right"] = get_advancement(
-            "right", function_right
+        advancement_id = f"nbs:{interaction.id}_left"
+        ctx.data[advancement_id] = get_advancement("left", function_left)
+        if interaction.function_left:
+            ctx.data[function_left] = interaction.function_left
+        ctx.data.functions[function_left].append(
+            f"advancement revoke @s only {advancement_id}"
         )
-        function_file = ctx.data.functions[f"nbs:interaction/{function_right}"]
-        function_file.append(f"advancement revoke @s only nbs:{interaction.id}_right")
+    if function_right:
+        advancement_id = f"nbs:{interaction.id}_right"
+        ctx.data[advancement_id] = get_advancement("right", function_right)
+        if interaction.function_right:
+            ctx.data[function_right] = interaction.function_right
+        ctx.data.functions[function_right].append(
+            f"advancement revoke @s only {advancement_id}"
+        )
 
 
 def beet_default(ctx: Context):
+
+    with open(ctx.directory / "src" / "songs.json", "r") as f:
+        songs = json.load(f)
+
+    for song in songs:
+        author_id = song["author"].lower().replace(" ", "_")
+        click_function = Function(f"say {author_id}")
+        interaction = Interaction(
+            id=f"painting_{author_id}",
+            tag_name=f"nbs_painting_{author_id}",
+            function_left=click_function,
+            function_right=click_function,
+        )
+        interactions.append(interaction)
+
     for interaction in interactions:
         generate_advancement(ctx, interaction)
