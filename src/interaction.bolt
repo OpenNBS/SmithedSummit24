@@ -1,7 +1,7 @@
 function ~/headphones:
     give @s minecraft:carved_pumpkin[minecraft:custom_model_data=48185,minecraft:item_name=Headphones,minecraft:rarity=rare,minecraft:max_stack_size=1,minecraft:lore=['{text:"Equip in your head slot to",italic:false,color:gray}','{text:"hear music everywhere!",italic:false,color:gray}']] 1
-    execute unless entity @s[tag=nbs_headphones_collected] run scoreboard players add nbs_stats headphones_players 1
-    scoreboard players add nbs_stats headphones_collected 1
+    execute unless entity @s[tag=nbs_headphones_collected] run scoreboard players add headphones_players nbs_stats 1
+    scoreboard players add headphones_collected nbs_stats 1
     tag @s add nbs_headphones_collected
 
 function ~/headphones_equip:
