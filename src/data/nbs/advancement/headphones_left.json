@@ -11,6 +11,6 @@
         }
     },
     "rewards": {
-        "function": "nbs:interaction/headphones_give"
+        "function": "nbs:interaction/headphones_collect"
     }
 }
