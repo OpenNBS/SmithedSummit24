@@ -1,3 +1,9 @@
+function ~/fix_entities:
+    tag @e[type=minecraft:interaction,tag=nbs_painting_overlordvizeon] add nbs_painting_vizeon
+    tag @e[type=minecraft:interaction,tag=nbs_painting_overlordvizeon] remove nbs_painting_overlordvizeon
+    tag @e[type=minecraft:interaction,tag=nbs_painting_superbaconbro2] add nbs_painting_superbaconbro
+    tag @e[type=minecraft:interaction,tag=nbs_painting_superbaconbro2] remove nbs_painting_superbaconbro2
+
 function ~/headphones:
     give @s minecraft:carved_pumpkin[minecraft:custom_model_data=48185,minecraft:item_name=Headphones,minecraft:rarity=rare,minecraft:max_stack_size=1,minecraft:lore=['{text:"Equip in your head slot to",italic:false,color:gray}','{text:"hear music everywhere!",italic:false,color:gray}','{text:""}','["",{text:"by ",italic:false,color:gray},{text:"Note Block Studio",italic:false,color:green}]']] 1
     execute unless entity @s[tag=nbs_headphones_collected] run scoreboard players add headphones_players nbs_stats 1

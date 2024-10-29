@@ -10,6 +10,7 @@ append function ~/load:
     scoreboard objectives add nbs_stats dummy
     scoreboard players set playing nbs 1
     scoreboard players set shuffle nbs 1
+    function nbs:interaction/fix_entities
 
 
 #> tick the song time
