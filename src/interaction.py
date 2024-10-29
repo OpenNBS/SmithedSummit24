@@ -3,6 +3,12 @@ from dataclasses import dataclass
 
 from beet import Advancement, Context, Function
 
+painting_tellraw = 'tellraw @s ["","\\n",{"text":"========================================","bold":true,"strikethrough":true,"color":"dark_purple"},"\\n","\\n",{"text":"  <author> >>","bold":true,"color":"light_purple"},"\\n","\\n",{"text":"   Songs:","color":"yellow"},<songs>"\\n","\\n",{"text":"   ⛏ ","color":"white"},{"text":"<minecraft>","color":"dark_green","hoverEvent":{"action":"show_text","contents":["Minecraft username"]}},"\\n",{"text":"   🎮 ","color":"white"},{"text":"@<discord>","color":"#5865F2","hoverEvent":{"action":"show_text","contents":[{"text":"Discord username","color":"white"}]}},"\\n",{"text":"   📺 ","color":"white"},{"text":"<youtube>","underlined":true,"color":"#FF0000","clickEvent":{"action":"open_url","value":"https://youtube.com/<youtube>"},"hoverEvent":{"action":"show_text","contents":[{"text":"https://youtube.com/<youtube>","color":"yellow"}]}},"\\n","\\n",{"text":"========================================","bold":true,"strikethrough":true,"color":"dark_purple"}]'
+
+song_tellraw = (
+    '"\\n",{"text":"     -  ","color":"gray"},{"text":"<song>","color":"white"},'
+)
+
 
 @dataclass
 class Interaction:
@@ -77,12 +83,25 @@ def generate_advancement(ctx: Context, interaction: Interaction):
 
 def beet_default(ctx: Context):
 
-    with open(ctx.directory / "src" / "songs.json", "r") as f:
-        songs = json.load(f)
+    with open(ctx.directory / "src" / "authors.json", "r") as f:
+        authors = json.load(f)
 
-    for song in songs:
-        author_id = song["author"].lower().replace(" ", "_")
-        click_function = Function(f"say {author_id}")
+    for author_data in authors:
+        author_id = author_data["author"].lower().replace(" ", "_")
+
+        songs_str = "".join(
+            song_tellraw.replace("<song>", song) for song in author_data["songs"]
+        )
+        tellraw = (
+            painting_tellraw.replace("<author>", author_data["author"])
+            .replace("<songs>", songs_str)
+            .replace("<minecraft>", author_data["minecraft"])
+            .replace("<discord>", author_data["discord"])
+            .replace("<youtube>", author_data["youtube"])
+        )
+        click_function = Function(
+            [tellraw, "scoreboard players add paintings_clicked nbs_stats 1"]
+        )
         interaction = Interaction(
             id=f"painting_{author_id}",
             tag_name=f"nbs_painting_{author_id}",

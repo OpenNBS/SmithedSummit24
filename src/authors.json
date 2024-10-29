@@ -7,7 +7,7 @@
             "Michael Jackson - Thriller"
         ],
         "minecraft": "Bentroen",
-        "youtube": "https://youtube.com/@Bentroen_",
+        "youtube": "@Bentroen_",
         "discord": "bentroen"
     },
     {
@@ -18,7 +18,7 @@
             "Radiohead - Jigsaw Falling Into Place"
         ],
         "minecraft": "encode42",
-        "youtube": "https://youtube.com/@encode42",
+        "youtube": "@encode42",
         "discord": "encode42"
     },
     {
@@ -29,7 +29,7 @@
             "Item Asylum - SMILER"
         ],
         "minecraft": "KaliumI",
-        "youtube": "https://www.youtube.com/@kaliumi",
+        "youtube": "@kaliumi",
         "discord": "kaliumi"
     },
     {
@@ -40,7 +40,7 @@
             "Shadrow - Spider Girl"
         ],
         "minecraft": "KosterMoltas",
-        "youtube": "https://youtube.com/@kostermoltas",
+        "youtube": "@kostermoltas",
         "discord": "kostermoltas"
     },
     {
@@ -49,18 +49,18 @@
             "Tatsuya Kitani - Ao no Sumika (Jujutsu Kaisen)"
         ],
         "minecraft": "Noteblocc",
-        "youtube": "https://youtube.com/@noteblockk",
+        "youtube": "@noteblockk",
         "discord": "seninsophile"
     },
     {
         "author": "NoteBlockMatt",
         "songs": [
-            "Toby Fox - Ruins (Undertale) - cover by NoteBlockMatt",
-            "Animal Crossing - Bubblegum K.K. - cover by NoteBlockMatt",
-            "Inside Out - Bundle of Joy - cover by NoteBlockMatt"
+            "Toby Fox - Ruins (Undertale)",
+            "Animal Crossing - Bubblegum K.K.",
+            "Inside Out - Bundle of Joy"
         ],
         "minecraft": "NoteBlockMatt",
-        "youtube": "https://youtube.com/@NoteBlockMatt",
+        "youtube": "@NoteBlockMatt",
         "discord": "noteblockmatt"
     },
     {
@@ -69,7 +69,7 @@
             "PlayfulPotato - GenerationNebula"
         ],
         "minecraft": "LoginatorV",
-        "youtube": "https://www.youtube.com/@PlayfulPotatwo",
+        "youtube": "@PlayfulPotatwo",
         "discord": "playfulpotato"
     },
     {
@@ -79,7 +79,7 @@
             "Weezer - Say It Ain't So"
         ],
         "minecraft": "PScoutGaming",
-        "youtube": "https://youtube.com/@pscoutgaming",
+        "youtube": "@pscoutgaming",
         "discord": "pscoutgaming"
     },
     {
@@ -88,7 +88,7 @@
             "Dropkick on My Devil! X - Ryusenkei Mayday"
         ],
         "minecraft": "ShinkoNet",
-        "youtube": "https://youtube.com/@shinkonet",
+        "youtube": "@shinkonet",
         "discord": "shinkonet"
     },
     {
@@ -99,27 +99,27 @@
             "StunningWheel94 - The Notes of No Return"
         ],
         "minecraft": "Sajsteve",
-        "youtube": "https://youtube.com/@StunningWheel94",
+        "youtube": "@StunningWheel94",
         "discord": "stunningwheel94"
     },
     {
         "author": "superbaconbro",
         "songs": [
-            "Game and Watch Gallery 4 - Mario's Cement Factory Modern",
+            "Game & Watch Gallery 4 - Mario's Cement Factory Modern",
             "Defenders II - Defenders Theme (Overgrown Temple)",
             "DiamondFire Battle Box - Beepy Blocks"
         ],
         "minecraft": "superbaconbro",
-        "youtube": "https://youtube.com/@superbaconbro",
+        "youtube": "@superbaconbro",
         "discord": "superbaconbro"
     },
     {
         "author": "tehbigmac",
         "songs": [
-            "DM DOKURO - Pest of the Cosmos (Terraria Calamity Mod)"
+            "DM DOKURO - Pest of the Cosmos (Terraria Calamity)"
         ],
         "minecraft": "tehbigmac",
-        "youtube": "https://youtube.com/@tehrealbigmac",
+        "youtube": "@tehrealbigmac",
         "discord": "tehrealbigmac"
     },
     {
@@ -128,7 +128,7 @@
             "Vizeon - Metropolis of Illusion"
         ],
         "minecraft": "Vizeon",
-        "youtube": "https://youtube.com/@OverlordVizeon",
+        "youtube": "@OverlordVizeon",
         "discord": "overlordvizeon"
     }
 ]
