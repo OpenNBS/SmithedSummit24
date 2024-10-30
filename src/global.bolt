@@ -61,13 +61,13 @@ song_count = len(glob.glob("songs/*.nbs"))
 
 function ~/place_speaker:
     function animated_java:music_speaker/summon/default
-    tag @e[type=item_display,limit=1,distance=..0.01,tag=nbs_speaker_new] add nbs_speaker
-    tag @e[type=item_display,limit=1,distance=..0.01,tag=nbs_speaker_new] remove nbs_speaker_new
+    tag @e[type=item_display,limit=1,distance=..1,tag=nbs_speaker_new] add nbs_speaker
+    tag @e[type=item_display,limit=1,distance=..1,tag=nbs_speaker_new] remove nbs_speaker_new
 
 function ~/place_loudspeaker:
     function animated_java:music_speaker/summon/default
-    tag @e[type=item_display,limit=1,distance=..0.01,tag=nbs_speaker_new] add nbs_loudspeaker
-    tag @e[type=item_display,limit=1,distance=..0.01,tag=nbs_speaker_new] remove nbs_speaker_new
+    tag @e[type=item_display,limit=1,distance=..1,tag=nbs_speaker_new] add nbs_loudspeaker
+    tag @e[type=item_display,limit=1,distance=..1,tag=nbs_speaker_new] remove nbs_speaker_new
 
 
 #> Song Controls
