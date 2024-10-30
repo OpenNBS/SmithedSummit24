@@ -3,6 +3,7 @@ function ~/fix_entities:
     tag @e[type=minecraft:interaction,tag=nbs_painting_overlordvizeon] remove nbs_painting_overlordvizeon
     tag @e[type=minecraft:interaction,tag=nbs_painting_superbaconbro2] add nbs_painting_superbaconbro
     tag @e[type=minecraft:interaction,tag=nbs_painting_superbaconbro2] remove nbs_painting_superbaconbro2
+    execute unless entity @e[type=item_display,tag=nbs_wall_art] run summon minecraft:item_display -55.0 81.0 -0.99 {item: {components: {"minecraft:custom_model_data": 48199, "minecraft:custom_name": '{"color":"yellow","italic":false,"text":"nbs:wall_art"}'}, count: 1, id: "minecraft:note_block"}, transformation: {left_rotation: [0.0f, 0.0f, 0.0f, 1.0f], right_rotation: [0.0f, 0.0f, 0.0f, 1.0f], scale: [16.0f, 16.0f, 0.01f], translation: [0.0f, 0.0f, 0.0f]},Tags:["nbs","nbs_wall_art"]}
 
 function ~/headphones:
     give @s minecraft:carved_pumpkin[minecraft:custom_model_data=48185,minecraft:item_name=Headphones,minecraft:rarity=rare,minecraft:max_stack_size=1,minecraft:lore=['{text:"Equip in your head slot to",italic:false,color:gray}','{text:"hear music everywhere!",italic:false,color:gray}','{text:""}','["",{text:"by ",italic:false,color:gray},{text:"Note Block Studio",italic:false,color:green}]']] 1

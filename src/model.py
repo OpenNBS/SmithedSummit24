@@ -18,6 +18,7 @@ models = [
     "piano",
     "guitar",
     "open_sign",
+    "wall_art",
 ]
 
 models_cmd = {model: i for i, model in enumerate(models)}
