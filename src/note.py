@@ -199,6 +199,9 @@ def get_notes(song: pynbs.File) -> Iterator[Tuple[int, List["Note"]]]:
     # Quantize notes to nearest tick (pigstep always exports at 20 t/s)
     # Remove vanilla instrument notes outside the 6-octave range
     # Remove custom instrument notes outside the 2-octave range
+
+    new_notes = []
+
     for note in song.notes:
         new_tick = round(note.tick * 20 / song.header.tempo)
         note.tick = new_tick
@@ -211,13 +214,17 @@ def get_notes(song: pynbs.File) -> Iterator[Tuple[int, List["Note"]]]:
             # print(
             #    f"Warning: Custom instrument out of 2-octave range at {note.tick},{note.layer}: {note_pitch}"
             # )
-            song.notes.remove(note)
+            continue
 
         if not is_custom_instrument and not is_6_octave:
             # print(
             #    f"Warning: Vanilla instrument out of 6-octave range at {note.tick},{note.layer}: {note_pitch}"
             # )
-            song.notes.remove(note)
+            continue
+
+        new_notes.append(note)
+
+    song.notes = new_notes
 
     # Ensure that there are as many layers as the last layer with a note
     max_layer = max(note.layer for note in song.notes)
