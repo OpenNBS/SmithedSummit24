@@ -50,6 +50,12 @@ def beet_default(ctx: Context):
                 event=instrument,
                 subtitle="subtitles.block.note_block.note",
             )
+
+            sound_config[instrument] = {
+                "sounds": [instrument_path],
+                "subtitle": "subtitles.block.note_block.note",
+            }
+
         elif instrument is not None and not instrument.startswith("block.note_block."):
             instrument_resource = instrument.replace("/", "_")
 
