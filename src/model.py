@@ -75,6 +75,8 @@ def generate_scrolling_texture(img: Image.Image, scroll_factor: int = 4) -> Text
     for i, frame in enumerate(frames):
         output.paste(frame, (0, i * height))
 
+    output.putalpha(255)
+
     return Texture(output)
 
 
