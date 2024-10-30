@@ -45,17 +45,17 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
         notes = chord[1]
             #data modify storage nbs:main playing set from storage nbs:main songs[0]
         function f"nbs:song/{song_name}/{tick}":
-            if tick % 8 == 0:
-                function nbs:global/beat
-
-            if notes:
-                at @e[type=item_display,tag=nbs_speaker] if entity @a[limit=1,distance=..12] function ~/speaker
-                at @e[type=item_display,tag=nbs_loudspeaker] if entity @a[limit=1,distance=..48] function ~/loudspeaker
-                if entity @a[limit=1,tag=nbs_headphones] function ~/headphones
-                scoreboard players add notes_played nbs_stats f"{len(notes)}"
-                scoreboard players add ticks_played nbs_stats 1
+            at @e[type=item_display,tag=nbs_speaker] if entity @a[limit=1,distance=..12] function ~/speaker
+            at @e[type=item_display,tag=nbs_loudspeaker] if entity @a[limit=1,distance=..48] function ~/loudspeaker
+            if entity @a[limit=1,tag=nbs_headphones] function ~/headphones
+            scoreboard players add notes_played nbs_stats f"{len(notes)}"
+            scoreboard players add ticks_played nbs_stats 1
 
             for note in notes:
+                if note.instrument == "BEAT":
+                    function nbs:global/beat
+                    continue
+
                 ctx.meta["instruments"].add(note.instrument)
 
                 append function ~/speaker:

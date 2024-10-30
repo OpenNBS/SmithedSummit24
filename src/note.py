@@ -202,6 +202,18 @@ def get_notes(song: pynbs.File) -> Iterator[Tuple[int, List["Note"]]]:
 
     new_notes = []
 
+    # Add special notes to mark the beats
+    # (we'll quantize the song afterwards so doing it later on would be out of sync)
+    for tick in range(0, song.header.song_length, 4):
+        song.notes.append(
+            pynbs.Note(
+                tick=tick,
+                layer=150,
+                key=45,
+                instrument=-1,
+            )
+        )
+
     for note in song.notes:
         new_tick = round(note.tick * 20 / song.header.tempo)
         note.tick = new_tick
@@ -247,7 +259,7 @@ def get_notes(song: pynbs.File) -> Iterator[Tuple[int, List["Note"]]]:
 
         layer = song.layers[note.layer]
 
-        sound = sounds[note.instrument]
+        sound = sounds[note.instrument] if note.instrument >= 0 else "BEAT"
         pitch = note.key + (note.pitch / 100)
         octave_suffix = "_-1" if pitch < 33 else "_1" if pitch > 57 else ""
         source = f"{sound}{octave_suffix}"
