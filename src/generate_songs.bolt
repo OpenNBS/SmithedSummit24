@@ -52,6 +52,8 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
                 at @e[type=item_display,tag=nbs_speaker] if entity @a[limit=1,distance=..12] function ~/speaker
                 at @e[type=item_display,tag=nbs_loudspeaker] if entity @a[limit=1,distance=..48] function ~/loudspeaker
                 if entity @a[limit=1,tag=nbs_headphones] function ~/headphones
+                scoreboard players add notes_played nbs_stats f"{len(notes)}"
+                scoreboard players add ticks_played nbs_stats 1
 
             for note in notes:
                 ctx.meta["instruments"].add(note.instrument)

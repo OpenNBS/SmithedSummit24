@@ -27,6 +27,7 @@ function ~/playback:
     $function nbs:song/$(name)/$(tick)
 
 function ~/change_song:
+    scoreboard players add songs_played nbs_stats 1
     scoreboard players set songtime nbs -1
     execute store result storage nbs:main playing.index int 1 run scoreboard players get songindex nbs
     function nbs:global/change_song2 with storage nbs:main playing
