@@ -19,6 +19,7 @@ models = [
     "guitar",
     "open_sign",
     "wall_art",
+    "balloon_nbs",
 ]
 
 models_cmd = {model: i for i, model in enumerate(models)}
@@ -178,9 +179,78 @@ def create_monitor_models(ctx: Context) -> None:
         models_cmd[f"monitor_{i}"] = i + 200
 
 
+def apply_alpha(img: Image.Image, alpha_texture: Image.Image) -> Image.Image:
+    def get_alpha_from_level(level: int) -> int:
+        if level < 64:
+            return 8
+        elif level < 128:
+            return 7
+        elif level < 192:
+            return 6
+        else:
+            return 5
+
+    img = img.convert("RGBA")
+    alpha_texture = alpha_texture.convert("L")
+    for x in range(img.width):
+        for y in range(img.height):
+            pixel = img.getpixel((x, y))
+            if not isinstance(pixel, tuple):
+                raise ValueError(f"Expected RGBA pixel, got {pixel}")
+            r, g, b, a = pixel
+            if a == 0:
+                continue
+            level = alpha_texture.getpixel((x, y))
+            if not isinstance(level, int):
+                raise ValueError(f"Alpha mask image must be in grayscale (L) mode")
+            alpha = get_alpha_from_level(level)
+            img.putpixel((x, y), (r, g, b, alpha))
+    return img
+
+
+def create_balloon_models(ctx: Context) -> None:
+
+    # Apply alpha to the note block balloon texture
+    balloon_texture = ctx.assets.textures["nbs:item/balloons/balloon_nbs"].image
+    alpha_texture = ctx.assets.textures["nbs:item/balloons/balloon_nbs_alpha"].image
+    balloon_texture = apply_alpha(balloon_texture, alpha_texture)
+    ctx.assets.textures["nbs:item/balloons/balloon_nbs"] = Texture(balloon_texture)
+    del ctx.assets.textures["nbs:item/balloons/balloon_nbs_alpha"]
+
+    balloon_variants = filter(
+        lambda name: name.startswith("nbs:item/balloons/balloon_note"),
+        ctx.assets.textures,
+    )
+
+    for i, texture in enumerate(balloon_variants):
+        if "alpha" in texture:
+            continue
+
+        # Create models for each balloon variant
+        balloon_model = Model(
+            {
+                "parent": "nbs:balloon_note_base",
+                "textures": {"balloon": texture},
+            }
+        )
+        filename = texture.split("/")[-1]
+        ctx.assets.models[f"nbs:{filename}"] = balloon_model
+        models_cmd[filename] = i + 300
+
+        # Apply alpha to the balloon texture
+        balloon_texture = ctx.assets.textures[texture].image
+        alpha_texture = ctx.assets.textures[
+            "nbs:item/balloons/balloon_note_alpha"
+        ].image
+        balloon_texture = apply_alpha(balloon_texture, alpha_texture)
+        ctx.assets.textures[texture] = Texture(balloon_texture)
+    del ctx.assets.textures["nbs:item/balloons/balloon_note_alpha"]
+
+
 def beet_default(ctx: Context):
     create_note_models(ctx)
     create_monitor_models(ctx)
+    create_balloon_models(ctx)
 
     ctx.assets["minecraft:item/note_block"] = generate_model_predicates(
         "block/note_block", models_cmd

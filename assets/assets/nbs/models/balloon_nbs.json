@@ -1,0 +1,6 @@
+{
+	"parent": "balloons:item/balloon_template",
+	"textures": {
+		"balloon": "nbs:item/balloons/balloon_nbs"
+	}
+}
