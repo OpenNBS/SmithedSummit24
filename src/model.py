@@ -162,7 +162,7 @@ def create_monitor_models(ctx: Context) -> None:
         resized_img = src_img.resize((size, size), Image.Resampling.LANCZOS)
         ctx.assets.textures[texture] = Texture(resized_img)
 
-    for i in range(8):
+    for i in range(6):
         texture = f"nbs:block/monitor_{i}"
         if texture not in ctx.assets.textures:
             texture = "nbs:block/monitor_0"
