@@ -23,7 +23,7 @@ append function ~/../global/load:
                 data modify storage nbs:temp input.UUID set from entity @s UUID
                 function animated_java:global/internal/gu/convert_uuid_array_to_string with storage nbs:temp input
                 data modify storage nbs:main f"locations.{entity}" append value {}
-                data modify storage nbs:main f"locations.{entity}[0].uuid" set from storage aj:uuid main.out
+                data modify storage nbs:main f"locations.{entity}[-1].uuid" set from storage aj:uuid main.out
 
 for song_stuff in enumerate(SONGS.glob("*.nbs")):
     song_index = song_stuff[0]
