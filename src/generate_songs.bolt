@@ -88,7 +88,7 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
                     playsound f"{note.play_headphones()}"
 
 
-    function f"nbs:song/{song_name}/{tick + 40}":
+    function f"nbs:song/{song_name}/{tick + 40}/root":
         function nbs:global/advance
 
 
