@@ -15,15 +15,6 @@ ctx.meta["instruments"] = set()
 
 append function ~/../global/load:
     data modify storage nbs:main songs set value []
-    execute function ~/save_speaker_positions:
-        data modify storage nbs:main locations set value {speaker: [], loudspeaker: []}
-        data modify storage nbs:temp input set value {}
-        for entity in ["speaker", "loudspeaker"]:
-            as @e[type=item_display, tag=f"nbs_{entity}"]:
-                data modify storage nbs:temp input.UUID set from entity @s UUID
-                function animated_java:global/internal/gu/convert_uuid_array_to_string with storage nbs:temp input
-                data modify storage nbs:main f"locations.{entity}" append value {}
-                data modify storage nbs:main f"locations.{entity}[-1].uuid" set from storage aj:uuid main.out
 
 for song_stuff in enumerate(SONGS.glob("*.nbs")):
     song_index = song_stuff[0]
