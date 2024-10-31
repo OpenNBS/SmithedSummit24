@@ -19,8 +19,7 @@ append function ~/load:
             as @e[type=item_display, tag=f"nbs_{entity}"]:
                 data modify storage nbs:temp input.UUID set from entity @s UUID
                 function animated_java:global/internal/gu/convert_uuid_array_to_string with storage nbs:temp input
-                data modify storage nbs:main f"locations.{entity}" append value {}
-                data modify storage nbs:main f"locations.{entity}[-1]" set from storage aj:uuid main.out
+                data modify storage nbs:main f"locations.{entity}" append from storage aj:uuid main.out
 
 
 function ~/tick:
