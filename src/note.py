@@ -10,7 +10,6 @@ from dataclasses import dataclass
 from typing import Any, Iterator, List, Tuple
 
 import pynbs
-from beet.core.utils import FileSystemPath
 
 NBS_DEFAULT_INSTRUMENTS = [
     "block.note_block.harp",
@@ -157,6 +156,7 @@ class Note:
             volume=volume,
             tag=tag,
             position=position,
+            selector="@s"
         )
 
     def play(
@@ -167,6 +167,7 @@ class Note:
         position: str = "^ ^ ^",
         volume: float = 1,
         min_volume: float = 0,
+        selector: str = "@a",
     ):
         """Return the /playsound command to play the note for the given player."""
 
@@ -177,7 +178,7 @@ class Note:
             selector_arguments.append(f"distance=..{radius:.2f}")
         if tag is not None:
             selector_arguments.append(f"tag={tag}")
-        target_selector = f"@a[{','.join(selector_arguments)}]"
+        target_selector = f"{selector}[{','.join(selector_arguments)}]"
 
         if self.pitch > 2:
             # print("Warning pitch", self.pitch, "is larger than 2", source)

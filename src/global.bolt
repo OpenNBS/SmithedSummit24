@@ -21,7 +21,7 @@ function ~/tick:
     function nbs:global/playback with storage nbs:main playing # TODO: this command works in a command block, but not here :c
 
 function ~/playback:
-    $function nbs:song/$(name)/$(tick)
+    $function nbs:song/$(name)/$(tick)/root
 
 function ~/change_song:
     scoreboard players add songs_played nbs_stats 1
@@ -33,6 +33,14 @@ function ~/change_song2:
     $data modify storage nbs:main playing set from storage nbs:main songs[$(index)]
     function nbs:global/title with storage nbs:main playing
     
+# Helper function that iterates through all speaker and loudspeaker in the world
+# Takes {speaker_type: "speaker", i: 0, song: "song", tick: 0}
+function ~/speaker_iter:
+    $data modify storage nbs:temp input.uuid set from storage nbs:main locations.$(speaker_type)[$(i)]
+    execute function ~/uuid with storage nbs:temp input:
+        $execute as $(uuid) at @s run function nbs:song/$(song)/$(tick)/$(speaker_type)
+    store result storage nbs:temp input int 1 scoreboard players add #iter nbs 1
+    if score #iter nbs < #len nbs function (~/) with storage nbs:temp input
 
 #> Effects
 
