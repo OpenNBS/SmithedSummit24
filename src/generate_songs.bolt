@@ -54,6 +54,7 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
             #data modify storage nbs:main playing set from storage nbs:main songs[0]
         function f"nbs:song/{song_name}/{tick}/root":
             # iterate through speaker UUIDs
+            data modify storage nbs:temp input set value {}
             data modify storage nbs:temp input.song set value (song_name)
             data modify storage nbs:temp input.tick set value (tick)
             for entity in ["speaker", "loudspeaker"]:

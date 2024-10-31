@@ -39,7 +39,7 @@ function ~/speaker_iter:
     $data modify storage nbs:temp input.uuid set from storage nbs:main locations.$(speaker_type)[$(i)]
     execute function ~/uuid with storage nbs:temp input:
         $execute as $(uuid) at @s run function nbs:song/$(song)/$(tick)/$(speaker_type)
-    store result storage nbs:temp input int 1 scoreboard players add #iter nbs 1
+    store result storage nbs:temp input.i int 1 scoreboard players add #iter nbs 1
     if score #iter nbs < #len nbs function (~/) with storage nbs:temp input
 
 #> Effects
