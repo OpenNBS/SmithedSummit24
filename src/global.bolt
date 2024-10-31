@@ -11,14 +11,11 @@ append function ~/load:
     scoreboard players set playing nbs 1
     scoreboard players set shuffle nbs 1
     function nbs:interaction/fix_entities
+    schedule function ~/../tick 1t replace
 
-
-#> tick the song time
-merge function_tag minecraft:tick {
-    "values": [(~/tick)]
-}
 
 function ~/tick:
+    schedule function (~/) 1t replace
     execute if score playing nbs matches 1 run scoreboard players add songtime nbs 1
     execute store result storage nbs:main playing.tick int 1 run scoreboard players get songtime nbs
     function nbs:global/playback with storage nbs:main playing # TODO: this command works in a command block, but not here :c
@@ -44,14 +41,6 @@ function ~/title:
     $execute at @e[type=item_display,tag=nbs_loudspeaker] run title @a[distance=..48] actionbar {"text":"","extra":[{"text":"🎵 Now Playing: ","color":"green"},{"text":"$(formatted_string)","color":"white"}]}
     $execute as @e[tag=aj.music_speaker.root] on passengers if entity @s[tag=aj.music_speaker.bone.text_display] run data modify entity @s text set value '{"text":"🎵 $(formatted_string)","color":"green"}'
     $execute as @e[type=item_display,tag=aj.music_speaker.root] on passengers if entity @s[tag=aj.music_speaker.bone.text_display] run data modify entity @s text set value {"text":"","extra":[{"text":"🎵 Now Playing: ","color":"green"},{"text":"$(formatted_string)","color":"white"}]}
-
-function ~/beat:
-    execute at @a[tag=nbs_headphones] run particle note ~ ~2.25 ~ 0 0 0 1 1
-    execute store result storage nbs:main beat.beat int 1 run random value 1..4
-    function nbs:global/beat2 with storage nbs:main beat
-
-function ~/beat2:
-    $execute as @e[tag=aj.music_speaker.root] at @s if entity @a[distance=..10] run function animated_java:music_speaker/animations/animation_speaker_beat_$(beat)/play
 
 
 song_count = len(glob.glob("songs/*.nbs"))

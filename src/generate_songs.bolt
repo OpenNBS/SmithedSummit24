@@ -10,12 +10,20 @@ SOURCE = "record"
 SOUNDS = Path("sounds")
 SONGS = Path("songs")
 
-
 # memo:
 ctx.meta["instruments"] = set()
 
 append function ~/../global/load:
     data modify storage nbs:main songs set value []
+    execute function ~/save_speaker_positions:
+        data modify storage nbs:main locations set value {speaker: [], loudspeaker: []}
+        data modify storage nbs:temp input set value {}
+        for entity in ["speaker", "loudspeaker"]:
+            as @e[type=item_display, tag=f"nbs_{entity}"]:
+                data modify storage nbs:temp input.UUID set from entity @s UUID
+                function animated_java:global/internal/gu with storage nbs:temp input
+                data modify storage nbs:main f"locations.{entity}" append value {}
+                data modify storage nbs:main f"locations.{entity}[0].uuid" set from storage aj:uuid main.out
 
 for song_stuff in enumerate(SONGS.glob("*.nbs")):
     song_index = song_stuff[0]
@@ -45,15 +53,31 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
         notes = chord[1]
             #data modify storage nbs:main playing set from storage nbs:main songs[0]
         function f"nbs:song/{song_name}/{tick}":
-            at @e[type=item_display,tag=nbs_speaker] if entity @a[limit=1,distance=..12] function ~/speaker
-            at @e[type=item_display,tag=nbs_loudspeaker] if entity @a[limit=1,distance=..48] function ~/loudspeaker
+            store result score #len nbs if data storage nbs:main locations.speakers
+            data modify storage nbs:temp input.i set value 0
+            execute function ~/iter with storage nbs:temp input:
+                raw f"$function {(~/uuid)} with storage nbs:main locations.speakers[$(i)]"
+                function ~/uuid:
+                    raw f"$execute as $(uuid) at @s run function {(~/speaker)}"
+                    raw f"$execute as $(uuid) at @s run function {(~/loudspeaker)}"
             if entity @a[limit=1,tag=nbs_headphones] function ~/headphones
             scoreboard players add notes_played nbs_stats f"{len(notes)}"
             scoreboard players add ticks_played nbs_stats 1
 
             for note in notes:
                 if note.instrument == "BEAT":
-                    function nbs:global/beat
+                    append function ~/headphones:
+                        at @a[tag=nbs_headphones] particle note ~ ~2.25 ~ 0 0 0 1 1
+                    
+                    for entity, dist in [("speaker", 12), ("loudspeaker", 48)]:
+                        append function ~/{entity}:
+                            store result score #random nbs random value 1..4
+                            for i in range(4):
+                                execute
+                                    if score #random nbs matches (i+1)
+                                    if entity @a[distance=(0, dist)]
+                                    function f"animated_java:music_speaker/animations/animation_speaker_beat_{(i+1)}/play"
+
                     continue
 
                 ctx.meta["instruments"].add(note.instrument)
