@@ -146,17 +146,13 @@ class Note:
         # the player is within the `volume`'s range - they will always hear it at `min_volume`.
         # No custom rolloff is present here.
 
-        min_volume = self.volume
-        volume = 0
-        tag = "nbs_headphones"
-        position = f"^ ^ ^{-self.panning}"
+        volume = self.volume
+        position = f"^{-self.panning} ^ ^"
 
         return self.play(
-            min_volume=min_volume,
             volume=volume,
-            tag=tag,
             position=position,
-            selector="@s"
+            selector="@s",
         )
 
     def play(
