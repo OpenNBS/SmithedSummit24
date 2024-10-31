@@ -49,7 +49,7 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
             data modify storage nbs:temp input.song set value (song_name)
             data modify storage nbs:temp input.tick set value (tick)
             for entity in ["speaker", "loudspeaker"]:
-                store result score #len nbs if data storage nbs:main f"locations.{entity}"
+                store result score #len nbs if data storage nbs:main f"locations.{entity}[]"
                 store result storage nbs:temp input.i int 1 scoreboard players set #iter nbs 0
                 data modify storage nbs:temp input.speaker_type set value (entity)
                 
