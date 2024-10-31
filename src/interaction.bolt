@@ -15,7 +15,6 @@ function ~/headphones_equip:
     tag @s add nbs_headphones
     scoreboard players add headphones_equipped nbs_stats 1
     function ~/../title with storage nbs:main playing
-    advancement revoke @s only nbs:headphones_equip
     function ~/../headphones_equip2 with storage nbs:main playing
 
 function ~/headphones_equip2:
@@ -23,6 +22,7 @@ function ~/headphones_equip2:
 
 function ~/headphones_unequip:
     tag @s remove nbs_headphones
+    advancement revoke @s only nbs:headphones_equip
     advancement revoke @s only nbs:headphones_unequip
 
 function ~/nbs_link:
