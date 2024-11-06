@@ -117,6 +117,8 @@ function ~/event/roll:
 
 function ~/event/end:
     summon lightning_bolt 0 95 -145
+    data modify entity @n[tag=nbw_block] item.components.minecraft:custom_model_data set value 48185
+    data modify entity @n[tag=nbw_text] item.components.minecraft:custom_model_data set value 48186
     for i in range(5):
         schedule function ~/../../launch_fireworks_large f"{i * 2}t" append
     for i in range(5):
@@ -130,8 +132,8 @@ function ~/launch_tick:
     particle note 0 85 -128 10 10 10 1 25
 
 function ~/launch_particle:
-    particle portal 0 96 -149 0 0 0 4 1000
-    particle enchant 0 96 -149 0 0 0 5 1000 force
+    particle portal 0 96 -149 0 0 0 4 500 force
+    particle enchant 0 96 -149 0 0 0 5 500 force
 
 function ~/launch_title:
     trigger next
@@ -162,8 +164,8 @@ function ~/launch_fireworks_large2:
 
 function ~/summon_sign:
     kill @e[type=item_display,tag=nbs_launch_sign]
-    summon minecraft:item_display 0.5 112.0 -148.375 {Tags:["nbs_launch_sign", "nbw_cube"], item: {components: {"minecraft:custom_model_data": 48185, "minecraft:custom_name": '{"color":"yellow","italic":false,"text":"nbs:nbw_block"}'}, count: 1, id: "minecraft:note_block"}, transformation: {left_rotation: [0.21294273f, 0.77828604f, 0.5052195f, 0.30607137f], right_rotation: [0.0f, 0.0f, 0.0f, 1.0f], scale: [5.375001f, 5.374359f, 5.375002f], translation: [0.0f, 0.0f, 0.0f]}}
-    summon minecraft:item_display 0.5 109.0 -145.6875 {Tags:["nbs_launch_sign", "nbw_text"], item: {components: {"minecraft:custom_model_data": 48186, "minecraft:custom_name": '{"color":"yellow","italic":false,"text":"nbs:nbw_text"}'}, count: 1, id: "minecraft:note_block"}, transformation: {left_rotation: [-0.090632565f, 0.0f, 0.0f, 0.9958844f], right_rotation: [0.0f, 0.0f, 0.0f, 1.0f], scale: [6.062499f, 6.0624943f, 6.0624976f], translation: [-0.3499448f, 0.04870289f, -0.3465393f]}, view_range: 0.657277f}
+    summon minecraft:item_display 0.5 112.0 -148.375 {Tags:["nbs_launch_sign", "nbw_block"], item: {components: {"minecraft:custom_model_data": 48187, "minecraft:custom_name": '{"color":"yellow","italic":false,"text":"nbs:nbw_block"}'}, count: 1, id: "minecraft:note_block"}, transformation: {left_rotation: [0.21294273f, 0.77828604f, 0.5052195f, 0.30607137f], right_rotation: [0.0f, 0.0f, 0.0f, 1.0f], scale: [5.375001f, 5.374359f, 5.375002f], translation: [0.0f, 0.0f, 0.0f]}}
+    summon minecraft:item_display 0.5 109.0 -145.6875 {Tags:["nbs_launch_sign", "nbw_text"], item: {components: {"minecraft:custom_model_data": 48188, "minecraft:custom_name": '{"color":"yellow","italic":false,"text":"nbs:nbw_text"}'}, count: 1, id: "minecraft:note_block"}, transformation: {left_rotation: [-0.090632565f, 0.0f, 0.0f, 0.9958844f], right_rotation: [0.0f, 0.0f, 0.0f, 1.0f], scale: [6.062499f, 6.0624943f, 6.0624976f], translation: [-0.3499448f, 0.04870289f, -0.3465393f]}, view_range: 0.657277f}
 
 function ~/launch_sign:
     positioned 0 109 -148 as @e[distance=..5,type=item_display,tag=nbs_launch_sign] run data merge entity @s {

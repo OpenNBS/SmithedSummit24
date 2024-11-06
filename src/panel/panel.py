@@ -1,12 +1,12 @@
 import json
 from pathlib import Path
 
-from beet import Advancement, Context, SoundConfig, Texture
-from PIL import Image
+from beet import Advancement, Context, Model, SoundConfig, Texture
+from PIL import Image, ImageEnhance
 
 from src.model import apply_emissive_textures, generate_model_predicates
 
-models = ["nbs:nbw_block", "nbs:nbw_text"]
+models = ["nbs:nbw_block", "nbs:nbw_text", "nbs:nbw_block_dark", "nbs:nbw_text_dark"]
 textures = [
     "nbs:block/nbw_left",
     "nbs:block/nbw_right",
@@ -31,10 +31,6 @@ def beet_default(ctx: Context):
             models_to_delete.append(model)
     for model in models_to_delete:
         del ctx.assets.models[model]
-
-    ctx.assets["minecraft:item/note_block"] = generate_model_predicates(
-        "block/note_block", [models.replace("nbs:", "") for models in models]
-    )
 
     # Remove lightning sound
     ctx.assets["minecraft"].sound_config.merge(  # type: ignore
@@ -66,6 +62,40 @@ def beet_default(ctx: Context):
             },
             "rewards": {"function": "nbs:panel/lever_interaction"},
         }
+    )
+
+    # Create dark model
+    for texture in textures:
+        original_img = ctx.assets.textures[texture].image.convert("RGBA")
+        frame = original_img.crop((0, 0, original_img.width, original_img.width))
+        brightness_effect = ImageEnhance.Brightness(frame)
+        ctx.assets.textures[f"{texture}_dark"] = Texture(
+            brightness_effect.enhance(0.05)
+        )
+
+    ctx.assets.models["nbs:nbw_block_dark"] = Model(
+        {
+            "parent": "nbs:nbw_block",
+            "textures": {
+                "0": "nbs:block/nbw_left_dark",
+                "1": "nbs:block/nbw_right_dark",
+                "2": "nbs:block/nbw_top_dark",
+            },
+        }
+    )
+
+    ctx.assets.models["nbs:nbw_text_dark"] = Model(
+        {
+            "parent": "nbs:nbw_text",
+            "textures": {
+                "2": "nbs:block/nbw_text_dark",
+            },
+        }
+    )
+
+    # Generate model predicates
+    ctx.assets["minecraft:item/note_block"] = generate_model_predicates(
+        "block/note_block", [models.replace("nbs:", "") for models in models]
     )
 
     apply_emissive_textures(ctx)
