@@ -63,9 +63,8 @@ function ~/place_lever:
     setblock 0 78 -140 minecraft:lever[facing=south]
 
 function ~/lever_interaction:
-    execute if block 0 78 -140 minecraft:lever[powered=true] run schedule function ~/../launch 10t replace
-
-
+    playsound minecraft:block.portal.trigger record @a ~ ~ ~ 1 2.0
+    execute if block 0 78 -140 minecraft:lever[powered=true] run schedule function ~/../launch 40t replace
 
 speakers = [
     (-21, 91, -134),
