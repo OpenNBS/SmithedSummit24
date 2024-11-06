@@ -10,7 +10,7 @@ data_pack:
 resource_pack:
   name: nbs-panel-24-rp
   description: "Resource pack for the NBS panel on Smithed Summit 2024"
-  # load: [assets]
+  load: [assets]
   # zipped: true
 
 require: [bolt]
