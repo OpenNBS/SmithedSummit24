@@ -40,7 +40,7 @@ function ~/lever:
     trigger next
 
 function ~/countdown:
-    scoreboard players set countdown nbs 10
+    scoreboard players set countdown nbs 5
     scoreboard players set songindex nbs 0
     scoreboard players set playing nbs 1
     title @a clear
