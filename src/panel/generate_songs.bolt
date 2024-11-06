@@ -38,7 +38,7 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
     for chord in get_notes(song):
         tick = chord[0]
         notes = chord[1]
-        
+
         function f"nbs:song/{song_name}/{tick}":
             for note in notes:
 

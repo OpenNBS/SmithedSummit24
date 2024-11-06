@@ -57,4 +57,3 @@ function ~/countdown_tick:
 function ~/title:
     pass
 
-
