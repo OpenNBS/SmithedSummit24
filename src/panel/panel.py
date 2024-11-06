@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from beet import Context, SoundConfig, Texture
+from beet import Advancement, Context, SoundConfig, Texture
 from PIL import Image
 
 from src.model import apply_emissive_textures, generate_model_predicates
@@ -46,6 +46,26 @@ def beet_default(ctx: Context):
                 }
             }
         )
+    )
+
+    # Lever interaction
+    ctx.data["nbs:lever_interaction"] = Advancement(
+        {
+            "criteria": {
+                "example": {
+                    "trigger": "minecraft:default_block_use",
+                    "conditions": {
+                        "location": [
+                            {
+                                "condition": "minecraft:location_check",
+                                "predicate": {"block": {"blocks": "minecraft:lever"}},
+                            }
+                        ]
+                    },
+                }
+            },
+            "rewards": {"function": "nbs:panel/lever_interaction"},
+        }
     )
 
     apply_emissive_textures(ctx)

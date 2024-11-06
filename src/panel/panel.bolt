@@ -11,7 +11,9 @@ append function ~/load:
     scoreboard players set playing nbs 0
     scoreboard players set songtime nbs -1
     function ~/../summon_sign
+    advancement revoke @a only nbs:lever_interaction
     schedule function ~/../tick 1t replace
+    fill 0 77 -141 0 78 -140 air
 
 function ~/tick:
     schedule function (~/) 1t replace
@@ -34,6 +36,10 @@ function ~/change_song2:
 #> Controls
 
 function ~/countdown:
+    function ~/../place_lever
+    schedule function ~/../countdown2 1s replace
+
+function ~/countdown2:
     scoreboard players set countdown nbs 10
     scoreboard players set songindex nbs 0
     scoreboard players set playing nbs 1
@@ -50,6 +56,16 @@ function ~/launch:
     function ~/../change_song
 
 #> Effects
+
+function ~/place_lever:
+    fill 0 77 -141 0 78 -141 minecraft:bricks destroy
+    fill 0 77 -141 0 78 -141 minecraft:bricks destroy
+    setblock 0 78 -140 minecraft:lever[facing=south]
+
+function ~/lever_interaction:
+    execute if block 0 78 -140 minecraft:lever[powered=true] run schedule function ~/../launch 10t replace
+
+
 
 speakers = [
     (-21, 91, -134),
