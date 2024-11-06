@@ -32,14 +32,27 @@ function ~/change_song2:
 #> Controls
 
 function ~/countdown:
+    scoreboard players set countdown nbs 10
     scoreboard players set songindex nbs 0
     scoreboard players set playing nbs 1
+    title @a clear
+    title @a times 0 0 1s
     function ~/../change_song
 
 function ~/launch:
     scoreboard players set songindex nbs 1
     scoreboard players set playing nbs 1
     function ~/../change_song
+
+#> Effects
+
+function ~/countdown_tick:
+    effect give @a minecraft:blindness 1 1 true
+    title @a title {"score":{"name":"countdown","objective":"nbs"}}
+    for side in [1, -1]:
+        for speaker in [(-21, 91, -134), (-24, 91, -128), (-24, 91, -120), (-24, 91, -111), (-24, 91, -102)]:
+            particle minecraft:explosion f"{speaker[0] * side}" f"{speaker[1]}" f"{speaker[2]}" ~ ~ ~ 1 0 force
+    scoreboard players remove countdown nbs 1
 
 function ~/title:
     pass
