@@ -46,8 +46,9 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
                     function nbs:panel/beat
                     continue
 
-                if note.instrument == "COUNTDOWN":
-                    function nbs:panel/countdown_tick
+                elif note.instrument.upper() == note.instrument:
+                    print(note.instrument)
+                    function f"nbs:panel/event/{note.instrument.lower()}"
                     continue
 
                 ctx.meta["instruments"].add(note.instrument)
