@@ -155,6 +155,15 @@ class Note:
             selector="@s",
         )
 
+    def play_panel(self):
+        volume = self.volume * 4
+        position = f"{-self.panning * 20} 90 -130"
+        return self.play(
+            volume=volume,
+            position=position,
+            selector="@a",
+        )
+
     def play(
         self,
         radius: float | None = None,
@@ -174,7 +183,11 @@ class Note:
             selector_arguments.append(f"distance=..{radius:.2f}")
         if tag is not None:
             selector_arguments.append(f"tag={tag}")
-        target_selector = f"{selector}[{','.join(selector_arguments)}]"
+
+        if selector_arguments:
+            target_selector = f"{selector}[{','.join(selector_arguments)}]"
+        else:
+            target_selector = selector
 
         if self.pitch > 2:
             # print("Warning pitch", self.pitch, "is larger than 2", source)

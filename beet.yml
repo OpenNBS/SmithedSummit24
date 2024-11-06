@@ -1,27 +1,25 @@
-id: nbs
+id: nbs-panel
 
 data_pack:
-  name: nbs-smithed-summit-24-dp
-  description: "Data pack for NBS on the Smithed Summit 2024"
+  name: nbs-panel-24-dp
+  description: "Data pack for the NBS panel on Smithed Summit 2024"
   load:
-    - data/nbs/module: src
-    - data: src/data
+    - data/nbs/module: src/panel
   # zipped: true
 
 resource_pack:
-  name: nbs-smithed-summit-24-rp
-  description: "Resource pack for NBS on the Smithed Summit 2024"
-  load: [assets]
+  name: nbs-panel-24-rp
+  description: "Resource pack for the NBS panel on Smithed Summit 2024"
+  # load: [assets]
   # zipped: true
 
 require: [bolt]
 pipeline:
-  - src.model
   - mecha
   - src.sound_config
-  - src.interaction
+  - src.panel.panel
 
-output: dist
+output: dist/panel
 
 meta:
   bolt:

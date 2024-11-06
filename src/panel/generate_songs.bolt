@@ -1,0 +1,62 @@
+from pathlib import Path
+from beet.core.utils import normalize_string
+from beet import Sound, SoundConfig
+import pynbs
+
+from src.note import get_notes
+
+SOURCE = "record"
+
+SOUNDS = Path("sounds")
+SONGS = Path("songs", "panel")
+
+# memo:
+ctx.meta["instruments"] = set()
+
+append function ~/../panel/load:
+    data modify storage nbs:main songs set value []
+
+for song_stuff in enumerate(SONGS.glob("*.nbs")):
+    song_index = song_stuff[0]
+    path = song_stuff[1]
+    song = pynbs.read(path)
+
+    song_name = normalize_string(path.stem.split(" - ")[0].split("(")[0])
+    formatted_string = path.stem
+    title = song.header.song_name
+    author = song.header.song_author
+    original_author = song.header.original_author
+
+    print("processing", song_name)
+
+    append function ~/../panel/load:
+        data modify storage nbs:main songs append value {
+            "name": song_name,
+            "index": song_index,
+        }
+    
+    for chord in get_notes(song):
+        tick = chord[0]
+        notes = chord[1]
+        
+        function f"nbs:song/{song_name}/{tick}":
+            for note in notes:
+
+                if note.instrument == "":
+                    continue
+                    
+                if note.instrument == "BEAT":
+                    append function ~/../headphones:
+                        particle ("note") ~ ~2.25 ~ 0 0 0 1 1
+                    continue
+
+                ctx.meta["instruments"].add(note.instrument)
+
+                playsound f"{note.play_panel()}"
+
+    function f"nbs:song/{song_name}/{tick + 1}":
+        scoreboard players set songtime nbs -1
+        scoreboard players set playing nbs 0
+
+
+print("🎉 LGTM")

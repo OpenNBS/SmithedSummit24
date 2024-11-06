@@ -1,0 +1,47 @@
+import glob
+
+#> Setup
+
+merge function_tag minecraft:load {
+    "values": [(~/load)]
+}
+
+append function ~/load:
+    scoreboard objectives add nbs dummy
+    scoreboard players set playing nbs 0
+    schedule function ~/../tick 1t replace
+
+function ~/tick:
+    schedule function (~/) 1t replace
+    execute if score playing nbs matches 1 run scoreboard players add songtime nbs 1
+    execute store result storage nbs:main playing.tick int 1 run scoreboard players get songtime nbs
+    function nbs:panel/playback with storage nbs:main playing
+
+function ~/playback:
+    $function nbs:song/$(name)/$(tick)
+
+function ~/change_song:
+    scoreboard players set songtime nbs -1
+    execute store result storage nbs:main playing.index int 1 run scoreboard players get songindex nbs
+    function ~/../change_song2 with storage nbs:main playing
+
+function ~/change_song2:
+    $data modify storage nbs:main playing set from storage nbs:main songs[$(index)]
+
+
+#> Controls
+
+function ~/countdown:
+    scoreboard players set songindex nbs 0
+    scoreboard players set playing nbs 1
+    function ~/../change_song
+
+function ~/launch:
+    scoreboard players set songindex nbs 1
+    scoreboard players set playing nbs 1
+    function ~/../change_song
+
+function ~/title:
+    pass
+
+

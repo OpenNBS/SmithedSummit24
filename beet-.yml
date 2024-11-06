@@ -1,0 +1,28 @@
+id: nbs
+
+data_pack:
+  name: nbs-smithed-summit-24-dp
+  description: "Data pack for NBS on the Smithed Summit 2024"
+  load:
+    - data/nbs/module: src
+    - data: src/data
+  # zipped: true
+
+resource_pack:
+  name: nbs-smithed-summit-24-rp
+  description: "Resource pack for NBS on the Smithed Summit 2024"
+  load: [assets]
+  # zipped: true
+
+require: [bolt]
+pipeline:
+  - src.model
+  - mecha
+  - src.sound_config
+  - src.interaction
+
+output: dist
+
+meta:
+  bolt:
+    entrypoint: "*"
