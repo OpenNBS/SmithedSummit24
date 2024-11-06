@@ -9,6 +9,7 @@ merge function_tag minecraft:load {
 append function ~/load:
     scoreboard objectives add nbs dummy
     scoreboard players set playing nbs 0
+    scoreboard players set songtime nbs -1
     schedule function ~/../tick 1t replace
 
 function ~/tick:
