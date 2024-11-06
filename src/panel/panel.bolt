@@ -51,7 +51,7 @@ function ~/launch:
     scoreboard players set songindex nbs 1
     scoreboard players set playing nbs 1
     schedule function ~/../launch_particle f"210t" replace
-    schedule function ~/../launch_title f"300t" replace
+    schedule function ~/../launch_title f"340t" replace
     function ~/../launch_sign
     function ~/../change_song
 
