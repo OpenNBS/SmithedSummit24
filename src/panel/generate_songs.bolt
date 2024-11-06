@@ -46,7 +46,7 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
                     continue
 
                 if note.instrument == "COUNTDOWN":
-                    function ~/countdown_beat
+                    function nbs:panel/countdown_tick
                     continue
 
                 ctx.meta["instruments"].add(note.instrument)
