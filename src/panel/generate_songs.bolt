@@ -43,6 +43,7 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
             for note in notes:
 
                 if note.instrument == "BEAT":
+                    function nbs:panel/beat
                     continue
 
                 if note.instrument == "COUNTDOWN":

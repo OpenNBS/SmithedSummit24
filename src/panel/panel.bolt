@@ -54,6 +54,9 @@ function ~/countdown_tick:
             particle minecraft:explosion f"{speaker[0] * side}" f"{speaker[1]}" f"{speaker[2]}" ~ ~ ~ 1 0 force
     scoreboard players remove countdown nbs 1
 
+function ~/beat:
+    say "beat"
+
 function ~/title:
     pass
 
