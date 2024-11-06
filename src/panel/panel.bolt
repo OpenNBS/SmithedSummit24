@@ -46,17 +46,61 @@ function ~/launch:
 
 #> Effects
 
-function ~/countdown_tick:
+speakers = [
+    (-21, 91, -134),
+    (-24, 91, -128),
+    (-24, 91, -120),
+    (-24, 91, -111),
+    (-24, 91, -102),
+]
+
+function ~/speaker_sweep:
+    for side in [1, -1]:
+        for speaker in speakers:
+            particle minecraft:sweep_attack f"{speaker[0] * side}" f"{speaker[1]}" f"{speaker[2]}" ~ ~ ~ 1 0 force
+
+function ~/speaker_explode:
+    for side in [1, -1]:
+        for speaker in speakers:
+            particle minecraft:explosion f"{speaker[0] * side}" f"{speaker[1]}" f"{speaker[2]}" ~ ~ ~ 1 0 force
+
+function ~/event/countdown:
     effect give @a minecraft:blindness 1 1 true
     title @a title {"score":{"name":"countdown","objective":"nbs"}}
-    for side in [1, -1]:
-        for speaker in [(-21, 91, -134), (-24, 91, -128), (-24, 91, -120), (-24, 91, -111), (-24, 91, -102)]:
-            particle minecraft:explosion f"{speaker[0] * side}" f"{speaker[1]}" f"{speaker[2]}" ~ ~ ~ 1 0 force
+    function ~/../../speaker_explode
     scoreboard players remove countdown nbs 1
 
+function ~/event/melody:
+    function ~/../../launch_fireworks
+
+function ~/event/roll:
+    function ~/../../speaker_sweep
+
+function ~/event/end:
+    say END
+    function ~/../../speaker_explode
+
 function ~/beat:
-    say "beat"
+    if score songindex nbs matches 1 run function ~/../launch_tick
 
-function ~/title:
-    pass
+function ~/launch_tick:
+    particle note 0 85 -128 10 10 10 1 25
 
+function ~/launch_particle:
+    particle portal 0 93 -140 0 0 0 4 1000
+
+function ~/launch_title:
+    trigger next
+    title @a reset
+    title @a title ["",{"text":"Note ","color":"blue","bold":true},{"text":"Block ","color":"dark_green","bold":true},{"text":"World","color":"dark_aqua","bold":true}]
+    title @a subtitle ["",{"text":"Now LIVE at ","color":"white"},{"text":"noteblock.world","underlined":true,"color":"aqua"},{"text":"!","color":"white"}]
+    playsound minecraft:entity.player.levelup record @a
+
+function ~/launch_fireworks:
+    execute store result storage nbs:main coords.x int 1 run random value -20..20
+    execute store result storage nbs:main coords.y int 1 run random value 82..92
+    execute store result storage nbs:main coords.z int 1 run random value -145..-140
+    function ~/../irelaunch_fireworks2 with storage nbs:main coords
+
+function ~/launch_fireworks2:
+    $summon firework_rocket $(x) $(y) $(z) {LifeTime:0,FireworksItem:{id:firework_rocket,count:1,components:{fireworks:{flight_duration:1,explosions:[{shape:"small_ball",has_twinkle:0,has_trail:0,colors:[I;2651799,4312372,6719955]}]}}}}
