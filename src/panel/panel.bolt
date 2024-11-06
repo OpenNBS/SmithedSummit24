@@ -75,6 +75,7 @@ function ~/destroy_lever:
 
 function ~/lever_interaction:
     playsound minecraft:block.portal.trigger record @a ~ ~ ~ 1 2.0
+    particle portal 0 78 -140 0 0 0 3 1000
     execute if block 0 78 -140 minecraft:lever[powered=true] run schedule function ~/../launch 40t replace
 
 speakers = [
@@ -106,13 +107,19 @@ function ~/event/melody:
     tag @a[tag=nbs_glowing] remove nbs_glowing
     tag @r[x=-27,y=74,z=-135,dx=54,dy=8,dz=20] add nbs_glowing
     effect give @a[x=-27,y=74,z=-135,dx=54,dy=8,dz=20,tag=nbs_glowing] minecraft:glowing 1 1 true
-    function ~/../../launch_fireworks
+
+function ~/event/counter:
+    function ~/../../launch_fireworks_small
 
 function ~/event/roll:
     function ~/../../speaker_sweep
 
 function ~/event/end:
     summon lightning_bolt 0 95 -145
+    for i in range(5):
+        schedule function ~/../../launch_fireworks_large f"{i}t" append
+    for i in range(10):
+        function ~/../../launch_fireworks_large
     function ~/../../speaker_explode
 
 function ~/beat:
@@ -132,14 +139,23 @@ function ~/launch_title:
     title @a subtitle ["",{"text":"Now LIVE at ","color":"white"},{"text":"noteblock.world","underlined":true,"color":"aqua"},{"text":"!","color":"white"}]
     playsound minecraft:entity.player.levelup record @a
 
-function ~/launch_fireworks:
+function ~/launch_fireworks_small:
+    execute store result storage nbs:main coords.x int 1 run random value -22..22
+    execute store result storage nbs:main coords.y int 1 run random value 80..94
+    execute store result storage nbs:main coords.z int 1 run random value -150..-138
+    function ~/../launch_fireworks_small2 with storage nbs:main coords
+
+function ~/launch_fireworks_large:
     execute store result storage nbs:main coords.x int 1 run random value -20..20
     execute store result storage nbs:main coords.y int 1 run random value 82..92
     execute store result storage nbs:main coords.z int 1 run random value -145..-140
-    function ~/../irelaunch_fireworks2 with storage nbs:main coords
+    function ~/../launch_fireworks_large2 with storage nbs:main coords
 
-function ~/launch_fireworks2:
-    $summon firework_rocket $(x) $(y) $(z) {LifeTime:0,FireworksItem:{id:firework_rocket,count:1,components:{fireworks:{flight_duration:1,explosions:[{shape:"small_ball",has_twinkle:0,has_trail:0,colors:[I;2651799,4312372,6719955]}]}}}}
+function ~/launch_fireworks_small2:
+    $summon firework_rocket $(x) $(y) $(z) {LifeTime:0,FireworksItem:{id:firework_rocket,count:1,components:{fireworks:{flight_duration:1,explosions:[{shape:"small_ball",has_twinkle:0,has_trail:0,colors:[I;15790320]}]}}}}
+
+function ~/launch_fireworks_large2:
+    $summon firework_rocket $(x) $(y) $(z) {LifeTime:0,FireworksItem:{id:firework_rocket,count:1,components:{fireworks:{flight_duration:1,explosions:[{shape:"large_ball",has_twinkle:1,has_trail:1,colors:[I;2651799,4312372,6719955]}]}}}}
 
 function ~/summon_sign:
     kill @e[type=item_display,tag=nbs_launch_sign]
