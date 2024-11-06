@@ -12,6 +12,10 @@ append function ~/load:
     scoreboard players set songtime nbs -1
     schedule function ~/../tick 1t replace
 
+    kill @e[type=item_display,tag=nbs_launch_sign]
+    summon minecraft:item_display 0.5 100.25 -146.375 {Tags:["nbs_launch_sign", "nbw_cube"], item: {components: {"minecraft:custom_model_data": 48185, "minecraft:custom_name": '{"color":"yellow","italic":false,"text":"nbs:nbw_block"}'}, count: 1, id: "minecraft:note_block"}, transformation: {left_rotation: [0.21294273f, 0.77828604f, 0.5052195f, 0.30607137f], right_rotation: [0.0f, 0.0f, 0.0f, 1.0f], scale: [5.375001f, 5.374359f, 5.375002f], translation: [0.0f, 0.0f, 0.0f]}}
+    summon minecraft:item_display 0.5 97.25 -143.6875 {Tags:["nbs_launch_sign", "nbw_text"], item: {components: {"minecraft:custom_model_data": 48186, "minecraft:custom_name": '{"color":"yellow","italic":false,"text":"nbs:nbw_text"}'}, count: 1, id: "minecraft:note_block"}, transformation: {left_rotation: [-0.090632565f, 0.0f, 0.0f, 0.9958844f], right_rotation: [0.0f, 0.0f, 0.0f, 1.0f], scale: [6.062499f, 6.0624943f, 6.0624976f], translation: [-0.3499448f, 0.04870289f, -0.3465393f]}, view_range: 0.657277f}
+
 function ~/tick:
     schedule function (~/) 1t replace
     execute if score playing nbs matches 1 run scoreboard players add songtime nbs 1
@@ -43,6 +47,9 @@ function ~/countdown:
 function ~/launch:
     scoreboard players set songindex nbs 1
     scoreboard players set playing nbs 1
+    schedule function ~/../launch_particle f"210t" replace
+    schedule function ~/../launch_title f"300t" replace
+    function ~/../launch_sign
     function ~/../change_song
 
 #> Effects
@@ -105,3 +112,12 @@ function ~/launch_fireworks:
 
 function ~/launch_fireworks2:
     $summon firework_rocket $(x) $(y) $(z) {LifeTime:0,FireworksItem:{id:firework_rocket,count:1,components:{fireworks:{flight_duration:1,explosions:[{shape:"small_ball",has_twinkle:0,has_trail:0,colors:[I;2651799,4312372,6719955]}]}}}}
+
+function ~/launch_sign:
+    positioned 0 90 -143 run data merge entity @e[distance=..1,type=item_display,tag=nbs_launch_sign,limit=1] {
+        transformation: {
+            translation: [0.0f, -10.0f, 0.0f],
+        },
+        start_interpolation: 0,
+        interpolation_duration: 256,
+    }
