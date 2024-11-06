@@ -82,7 +82,7 @@ function ~/event/roll:
     function ~/../../speaker_sweep
 
 function ~/event/end:
-    say END
+    summon lightning_bolt 0 95 -145
     function ~/../../speaker_explode
 
 function ~/beat:
@@ -92,7 +92,8 @@ function ~/launch_tick:
     particle note 0 85 -128 10 10 10 1 25
 
 function ~/launch_particle:
-    particle portal 0 93 -140 0 0 0 4 1000
+    particle portal 0 96 -149 0 0 0 4 1000
+    particle enchant 0 96 -149 0 0 0 5 1000 force
 
 function ~/launch_title:
     trigger next

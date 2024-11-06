@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from beet import Context, Texture
+from beet import Context, SoundConfig, Texture
 from PIL import Image
 
 from src.model import apply_emissive_textures, generate_model_predicates
@@ -34,6 +34,18 @@ def beet_default(ctx: Context):
 
     ctx.assets["minecraft:item/note_block"] = generate_model_predicates(
         "block/note_block", [models.replace("nbs:", "") for models in models]
+    )
+
+    # Remove lightning sound
+    ctx.assets["minecraft"].sound_config.merge(  # type: ignore
+        SoundConfig(
+            {
+                "entity.lightning_bolt.thunder": {
+                    "sounds": [],
+                    "replace": True,
+                }
+            }
+        )
     )
 
     apply_emissive_textures(ctx)
