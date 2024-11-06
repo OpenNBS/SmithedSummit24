@@ -116,10 +116,10 @@ function ~/summon_sign:
     summon minecraft:item_display 0.5 109.0 -145.6875 {Tags:["nbs_launch_sign", "nbw_text"], item: {components: {"minecraft:custom_model_data": 48186, "minecraft:custom_name": '{"color":"yellow","italic":false,"text":"nbs:nbw_text"}'}, count: 1, id: "minecraft:note_block"}, transformation: {left_rotation: [-0.090632565f, 0.0f, 0.0f, 0.9958844f], right_rotation: [0.0f, 0.0f, 0.0f, 1.0f], scale: [6.062499f, 6.0624943f, 6.0624976f], translation: [-0.3499448f, 0.04870289f, -0.3465393f]}, view_range: 0.657277f}
 
 function ~/launch_sign:
-    positioned 0 90 -143 run data merge entity @e[distance=..1,type=item_display,tag=nbs_launch_sign,limit=1] {
+    positioned 0 109 -148 as @e[distance=..5,type=item_display,tag=nbs_launch_sign] run data merge entity @s {
         transformation: {
-            translation: [0.0f, -10.0f, 0.0f],
+            translation: [0.0f, -15.0f, 0.0f],
         },
         start_interpolation: 0,
-        interpolation_duration: 256,
+        interpolation_duration: 255,
     }
