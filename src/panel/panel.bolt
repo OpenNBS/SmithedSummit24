@@ -37,6 +37,7 @@ function ~/change_song2:
 
 function ~/lever:
     function ~/../place_lever
+    trigger next
 
 function ~/countdown:
     scoreboard players set countdown nbs 10
