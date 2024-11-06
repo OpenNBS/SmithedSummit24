@@ -57,7 +57,7 @@ function ~/title:
     $execute at @e[type=item_display,tag=nbs_loudspeaker] run title @a[distance=..48] actionbar {"text":"","extra":[{"text":"🎵 Now Playing: ","color":"green"},{"text":"$(formatted_string)","color":"white"}]}
     $execute as @e[tag=aj.music_speaker.root] on passengers if entity @s[tag=aj.music_speaker.bone.text_display] run data modify entity @s text set value '{"text":"🎵 $(formatted_string)","color":"green"}'
     $execute as @e[type=item_display,tag=aj.music_speaker.root] on passengers if entity @s[tag=aj.music_speaker.bone.text_display] run data modify entity @s text set value {"text":"","extra":[{"text":"🎵 Now Playing: ","color":"green"},{"text":"$(formatted_string)","color":"white"}]}
-    title @a[tag=nbs_headphones] actionbar {"text":"","extra":[{"text":"🎧 Now Playing: ","color":"green"},{"text":"$(formatted_string)","color":"white"}]}
+    $title @a[tag=nbs_headphones] actionbar {"text":"","extra":[{"text":"🎧 Now Playing: ","color":"green"},{"text":"$(formatted_string)","color":"white"}]}
 
 
 song_count = len(glob.glob("songs/*.nbs"))
