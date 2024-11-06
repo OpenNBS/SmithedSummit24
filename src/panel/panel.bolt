@@ -13,7 +13,7 @@ append function ~/load:
     function ~/../summon_sign
     advancement revoke @a only nbs:lever_interaction
     schedule function ~/../tick 1t replace
-    fill 0 77 -141 0 78 -140 air
+    function ~/../destroy_lever
 
 function ~/tick:
     schedule function (~/) 1t replace
@@ -55,12 +55,23 @@ function ~/launch:
     function ~/../launch_sign
     function ~/../change_song
 
+function ~/cleanup:
+    kill @e[type=item_display,tag=nbs_launch_sign]
+    playsound minecraft:entity.item.pickup record @a 0 96 -146 8 1
+    particle cloud 0 96 -144 0.25 0.25 0.25 0.1 10 force
+    function ~/../
+    function ~/../destroy_lever
+
+
 #> Effects
 
 function ~/place_lever:
     fill 0 77 -141 0 78 -141 minecraft:bricks destroy
     fill 0 77 -141 0 78 -141 minecraft:bricks destroy
     setblock 0 78 -140 minecraft:lever[facing=south]
+
+function ~/destroy_lever:
+    fill 0 77 -141 0 78 -141 minecraft:air destroy
 
 function ~/lever_interaction:
     playsound minecraft:block.portal.trigger record @a ~ ~ ~ 1 2.0
