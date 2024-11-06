@@ -35,11 +35,10 @@ function ~/change_song2:
 
 #> Controls
 
-function ~/countdown:
+function ~/lever:
     function ~/../place_lever
-    schedule function ~/../countdown2 1s replace
 
-function ~/countdown2:
+function ~/countdown:
     scoreboard players set countdown nbs 10
     scoreboard players set songindex nbs 0
     scoreboard players set playing nbs 1
