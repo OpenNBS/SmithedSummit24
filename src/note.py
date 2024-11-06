@@ -269,7 +269,16 @@ def get_notes(song: pynbs.File) -> Iterator[Tuple[int, List["Note"]]]:
 
         layer = song.layers[note.layer]
 
-        sound = sounds[note.instrument] if note.instrument >= 0 else "BEAT"
+        if note.instrument >= 0:
+            instrument = song.instruments[
+                note.instrument - song.header.default_instruments
+            ]
+            if instrument.file.startswith("minecraft/"):
+                sound = sounds[note.instrument]
+            else:
+                sound = instrument.name  # Used for markers such as COUNTDOWN
+        else:
+            sound = "BEAT"
         pitch = note.key + (note.pitch / 100)
         octave_suffix = "_-1" if pitch < 33 else "_1" if pitch > 57 else ""
         source = f"{sound}{octave_suffix}"

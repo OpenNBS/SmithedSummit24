@@ -42,12 +42,11 @@ for song_stuff in enumerate(SONGS.glob("*.nbs")):
         function f"nbs:song/{song_name}/{tick}":
             for note in notes:
 
-                if note.instrument == "":
-                    continue
-                    
                 if note.instrument == "BEAT":
-                    append function ~/../headphones:
-                        particle ("note") ~ ~2.25 ~ 0 0 0 1 1
+                    continue
+
+                if note.instrument == "COUNTDOWN":
+                    function ~/countdown_beat
                     continue
 
                 ctx.meta["instruments"].add(note.instrument)
