@@ -156,7 +156,7 @@ class Note:
         )
 
     def play_panel(self):
-        volume = self.volume * 4
+        volume = self.volume * 8
         position = f"{-self.panning * 20} 90 -130"
         return self.play(
             volume=volume,
