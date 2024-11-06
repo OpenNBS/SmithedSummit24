@@ -50,6 +50,7 @@ function ~/countdown:
 function ~/launch:
     scoreboard players set songindex nbs 1
     scoreboard players set playing nbs 1
+    scoreboard players set x nbs -10
     schedule function ~/../launch_particle f"210t" replace
     schedule function ~/../launch_title f"340t" replace
     function ~/../launch_sign
@@ -117,8 +118,8 @@ function ~/event/roll:
 function ~/event/end:
     summon lightning_bolt 0 95 -145
     for i in range(5):
-        schedule function ~/../../launch_fireworks_large f"{i}t" append
-    for i in range(10):
+        schedule function ~/../../launch_fireworks_large f"{i * 2}t" append
+    for i in range(5):
         function ~/../../launch_fireworks_large
     function ~/../../speaker_explode
 
@@ -140,9 +141,11 @@ function ~/launch_title:
     playsound minecraft:entity.player.levelup record @a
 
 function ~/launch_fireworks_small:
-    execute store result storage nbs:main coords.x int 1 run random value -22..22
-    execute store result storage nbs:main coords.y int 1 run random value 80..94
-    execute store result storage nbs:main coords.z int 1 run random value -150..-138
+    data modify storage nbs:main coords set value {}
+    execute store result storage nbs:main coords.x int 1 run scoreboard players get x nbs
+    data modify storage nbs:main coords.y set value 87
+    data modify storage nbs:main coords.z set value -140
+    scoreboard players add x nbs 3
     function ~/../launch_fireworks_small2 with storage nbs:main coords
 
 function ~/launch_fireworks_large:
