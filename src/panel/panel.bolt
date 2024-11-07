@@ -132,7 +132,7 @@ function ~/beat:
     if score songindex nbs matches 1 run function ~/../launch_tick
 
 function ~/launch_tick:
-    particle note 0 85 -128 10 10 10 1 25
+    particle note 0 85 -128 10 10 10 1 25 force
 
 function ~/launch_particle:
     particle portal 0 96 -149 0 0 0 4 500 force
