@@ -37,9 +37,10 @@ function ~/change_song2:
 
 function ~/lever:
     function ~/../place_lever
-    trigger next
+    execute as @p run trigger next
 
 function ~/countdown:
+    execute as @p run trigger next
     scoreboard players set countdown nbs 5
     scoreboard players set songindex nbs 0
     scoreboard players set playing nbs 1
@@ -138,7 +139,7 @@ function ~/launch_particle:
     particle enchant 0 96 -149 0 0 0 5 500 force
 
 function ~/launch_title:
-    trigger next
+    execute as @p run trigger next
     title @a reset
     title @a title ["",{"text":"Note ","color":"blue","bold":true},{"text":"Block ","color":"dark_green","bold":true},{"text":"World","color":"dark_aqua","bold":true}]
     title @a subtitle ["",{"text":"Now LIVE at ","color":"white"},{"text":"noteblock.world","underlined":true,"color":"aqua"},{"text":"!","color":"white"}]
