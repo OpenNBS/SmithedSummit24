@@ -24,9 +24,9 @@ models = [
 
 models_cmd = {model: i for i, model in enumerate(models)}
 
-emissive_textures = ["scroll_panel_*", "note_sign_*", "monitor_*", "open_sign"]
+emissive_textures = ["scroll_panel_*", "note_sign_*", "monitor_*", "open_sign", "nbw_*"]
 
-no_shade_textures = ["nbw_*"]
+no_shade_textures = []
 
 EMISSIVE_ALPHA = 254
 NO_SHADE_ALPHA = 253
